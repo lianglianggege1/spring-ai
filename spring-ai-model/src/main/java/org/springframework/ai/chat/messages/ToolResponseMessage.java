@@ -30,19 +30,41 @@ import org.jspecify.annotations.Nullable;
  * @author Eric Bottard
  * @since 1.0.0
  */
+/**
+ * 工具响应消息：承载「工具/函数调用的结果」，用于把外部系统的执行结果回传给模型，让模型据此继续生成最终回复。
+ *
+ * <p>典型流程：模型在 AssistantMessage 中给出 ToolCall → 应用侧执行对应工具 → 用本消息把结果
+ * 回传 → 模型聚合后产出最终答案。
+ *
+ * @author Christian Tzolov
+ * @author Eric Bottard
+ * @since 1.0.0
+ */
 public class ToolResponseMessage extends AbstractMessage {
 
+	/**
+	 * 工具响应列表：一次消息可以包含多个工具的返回结果。
+	 */
 	protected final List<ToolResponse> responses;
 
+	/**
+	 * 受保护构造器。注意：传给父类的文本为 ""（空串），因为工具消息本身没有"文本回复"，结果都在 responses 里。
+	 */
 	protected ToolResponseMessage(List<ToolResponse> responses, Map<String, Object> metadata) {
 		super(MessageType.TOOL, "", metadata);
 		this.responses = responses;
 	}
 
+	/**
+	 * 创建空 Builder。
+	 */
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	/**
+	 * 获取工具响应列表。
+	 */
 	public List<ToolResponse> getResponses() {
 		return this.responses;
 	}
@@ -72,10 +94,20 @@ public class ToolResponseMessage extends AbstractMessage {
 				+ ", metadata=" + this.metadata + '}';
 	}
 
+	/**
+	 * 单个工具响应的不可变快照。
+	 *
+	 * @param id           工具调用标识，需与对应 ToolCall 的 id 一致以配对
+	 * @param name         被调用的工具（函数）名称
+	 * @param responseData 工具实际返回的数据（通常 JSON 或纯文本）
+	 */
 	public record ToolResponse(String id, String name, String responseData) {
 
 	}
 
+	/**
+	 * 建造者：流式构造 ToolResponseMessage。
+	 */
 	public static final class Builder {
 
 		private List<ToolResponse> responses = List.of();
@@ -95,6 +127,9 @@ public class ToolResponseMessage extends AbstractMessage {
 			return this;
 		}
 
+		/**
+		 * 构建 ToolResponseMessage 实例。
+		 */
 		public ToolResponseMessage build() {
 			return new ToolResponseMessage(this.responses, this.metadata);
 		}

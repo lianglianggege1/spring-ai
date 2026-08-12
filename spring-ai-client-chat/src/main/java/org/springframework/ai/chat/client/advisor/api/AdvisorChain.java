@@ -25,6 +25,12 @@ import io.micrometer.observation.ObservationRegistry;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 定义执行顾问链所需的上下文，作为聊天请求处理流程的一部分。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface AdvisorChain {
 
 	default ObservationRegistry getObservationRegistry() {

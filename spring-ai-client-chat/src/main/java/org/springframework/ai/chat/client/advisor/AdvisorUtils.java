@@ -37,6 +37,10 @@ public final class AdvisorUtils {
 	 * {@link ChatResponse} with at least one result having a non-empty finish reason in
 	 * its metadata.
 	 */
+	/**
+	 * 检查传入的 {@link ChatClientResponse} 是否包含 {@link ChatResponse}，
+	 * 且至少有一条返回结果的元数据中存在非空的结束原因。
+	 */
 	public static Predicate<ChatClientResponse> onFinishReason() {
 		return chatClientResponse -> {
 			ChatResponse chatResponse = chatClientResponse.chatResponse();

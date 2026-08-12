@@ -32,17 +32,32 @@ import org.springframework.ai.chat.client.ChatClientResponse;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 由 {@link StreamAdvisor} 实例组成的顾问链，用于编排链中下一个 {@link StreamAdvisor}
+ * 执行 {@link ChatClientRequest}。
+ *
+ * @author Christian Tzolov
+ * @author Dariusz Jedrzejczyk
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface StreamAdvisorChain extends AdvisorChain {
 
 	/**
 	 * Invokes the next {@link StreamAdvisor} in the {@link StreamAdvisorChain} with the
 	 * given request.
 	 */
+	/**
+	 * 使用给定的请求调用 {@link StreamAdvisorChain} 中的下一个 {@link StreamAdvisor}。
+	 */
 	Flux<ChatClientResponse> nextStream(ChatClientRequest chatClientRequest);
 
 	/**
 	 * Returns the list of all the {@link StreamAdvisor} instances included in this chain
 	 * at the time of its creation.
+	 */
+	/**
+	 * 返回该顾问链创建时所包含的全部 {@link StreamAdvisor} 实例列表。
 	 */
 	List<StreamAdvisor> getStreamAdvisors();
 
@@ -53,6 +68,12 @@ public interface StreamAdvisorChain extends AdvisorChain {
 	 * @return a new StreamAdvisorChain containing all advisors after the specified
 	 * advisor
 	 * @throws IllegalArgumentException if the specified advisor is not part of the chain
+	 */
+	/**
+	 * 创建一个新的 StreamAdvisorChain 副本，包含指定顾问之后的所有顾问。
+	 * @param after 以此 StreamAdvisor 为分界，复制其后的顾问链
+	 * @return 新的 StreamAdvisorChain，包含指定顾问之后的全部顾问
+	 * @throws IllegalArgumentException 如果指定顾问不在该顾问链中
 	 */
 	StreamAdvisorChain copy(StreamAdvisor after);
 

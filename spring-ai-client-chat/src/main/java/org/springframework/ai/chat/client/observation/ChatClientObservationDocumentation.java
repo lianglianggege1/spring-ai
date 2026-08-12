@@ -27,10 +27,19 @@ import io.micrometer.observation.docs.ObservationDocumentation;
  * @author Christian Tzolov
  * @since 1.0.0
  */
+/**
+ * 聊天客户端观测指标的文档化约定。
+ *
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public enum ChatClientObservationDocumentation implements ObservationDocumentation {
 
 	/**
 	 * AI Chat Client observations
+	 */
+	/**
+	 * AI聊天客户端观测指标
 	 */
 	AI_CHAT_CLIENT {
 		@Override
@@ -55,6 +64,9 @@ public enum ChatClientObservationDocumentation implements ObservationDocumentati
 		/**
 		 * Spring AI kind.
 		 */
+		/**
+		 * Spring‑AI 类型标识。
+		 */
 		SPRING_AI_KIND {
 			@Override
 			public String asString() {
@@ -64,6 +76,9 @@ public enum ChatClientObservationDocumentation implements ObservationDocumentati
 
 		/**
 		 * Is the chat model response a stream.
+		 */
+		/**
+		 * 标记聊天模型响应是否为流式返回。
 		 */
 		STREAM {
 			@Override
@@ -79,6 +94,9 @@ public enum ChatClientObservationDocumentation implements ObservationDocumentati
 		/**
 		 * List of configured chat client advisors.
 		 */
+		/**
+		 * 已配置的聊天客户端顾问列表。
+		 */
 		CHAT_CLIENT_ADVISORS {
 			@Override
 			public String asString() {
@@ -88,6 +106,9 @@ public enum ChatClientObservationDocumentation implements ObservationDocumentati
 
 		/**
 		 * The identifier of the conversation.
+		 */
+		/**
+		 * 会话唯一标识。
 		 */
 		CHAT_CLIENT_CONVERSATION_ID {
 			@Override
@@ -100,6 +121,9 @@ public enum ChatClientObservationDocumentation implements ObservationDocumentati
 
 		/**
 		 * Names of the tools made available to the chat client.
+		 */
+		/**
+		 * 聊天客户端可用的工具名称列表。
 		 */
 		CHAT_CLIENT_TOOL_NAMES {
 			@Override

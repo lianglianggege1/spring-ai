@@ -25,8 +25,21 @@ import io.micrometer.observation.ObservationConvention;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 图像模型调用的「观测约定」接口。
+ * <p>
+ * 所谓 ObservationConvention，是 Micrometer 中用于决定「一次观测叫什么名字、带哪些标签」的策略对象。
+ * 实现本接口即可自定义图像模型调用所产生的 metrics/trace 的命名与标签，
+ * 框架默认实现见 {@link DefaultImageModelObservationConvention}。
+ * <p>
+ * 用法：自定义一个实现类并注册为 Bean，或传给具体 ImageModel 实现，即可覆盖默认观测行为。
+ *
+ * @since 1.0.0
+ */
 public interface ImageModelObservationConvention extends ObservationConvention<ImageModelObservationContext> {
 
+	// 类型守卫：Micrometer 会用它判断当前约定能否处理某个观测上下文。
+	// 这里只接受图像模型上下文，避免把约定误用到对话、嵌入等其它模态的观测上。
 	@Override
 	default boolean supportsContext(Observation.Context context) {
 		return context instanceof ImageModelObservationContext;

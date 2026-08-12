@@ -29,10 +29,19 @@ import org.springframework.ai.observation.conventions.AiObservationAttributes;
  * @author Christian Tzolov
  * @since 1.0.0
  */
+/**
+ * AI顾问观测文档。
+ *
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public enum AdvisorObservationDocumentation implements ObservationDocumentation {
 
 	/**
 	 * AI Advisor observations
+	 */
+	/**
+	 * AI顾问观测指标
 	 */
 	AI_ADVISOR {
 		@Override
@@ -55,10 +64,16 @@ public enum AdvisorObservationDocumentation implements ObservationDocumentation 
 	/**
 	 * Low cardinality key names.
 	 */
+	/**
+	 * 低基数维度键名。
+	 */
 	public enum LowCardinalityKeyNames implements KeyName {
 
 		/**
 		 * The name of the operation being performed.
+		 */
+		/**
+		 * 正在执行的操作名称。
 		 */
 		AI_OPERATION_TYPE {
 			@Override
@@ -70,6 +85,9 @@ public enum AdvisorObservationDocumentation implements ObservationDocumentation 
 		/**
 		 * The model provider as identified by the client instrumentation.
 		 */
+		/**
+		 * 由客户端埋点识别出的模型服务商。
+		 */
 		AI_PROVIDER {
 			@Override
 			public String asString() {
@@ -80,6 +98,9 @@ public enum AdvisorObservationDocumentation implements ObservationDocumentation 
 		/**
 		 * Spring AI kind.
 		 */
+		/**
+		 * Spring AI 类型标识。
+		 */
 		SPRING_AI_KIND {
 			@Override
 			public String asString() {
@@ -89,6 +110,9 @@ public enum AdvisorObservationDocumentation implements ObservationDocumentation 
 
 		/**
 		 * Advisor name.
+		 */
+		/**
+		 * 顾问名称。
 		 */
 		ADVISOR_NAME {
 			@Override
@@ -102,10 +126,16 @@ public enum AdvisorObservationDocumentation implements ObservationDocumentation 
 	/**
 	 * High cardinality key names.
 	 */
+	/**
+	 * 高基数维度键名。
+	 */
 	public enum HighCardinalityKeyNames implements KeyName {
 
 		/**
 		 * Advisor order in the advisor chain.
+		 */
+		/**
+		 * 顾问在顾问链中的执行顺序。
 		 */
 		ADVISOR_ORDER {
 			@Override

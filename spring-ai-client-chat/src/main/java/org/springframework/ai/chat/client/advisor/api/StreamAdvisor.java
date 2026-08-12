@@ -29,6 +29,14 @@ import org.springframework.ai.chat.client.ChatClientResponse;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 用于执行流程的顾问，最终产生对AI模型的流式调用。
+ *
+ * @author Christian Tzolov
+ * @author Dariusz Jedrzejczyk
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface StreamAdvisor extends Advisor {
 
 	Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain);

@@ -27,6 +27,14 @@ import org.springframework.ai.chat.client.ChatClientResponse;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 用于执行流程的顾问，最终产生对AI模型的普通调用。
+ *
+ * @author Christian Tzolov
+ * @author Dariusz Jedrzejczyk
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface CallAdvisor extends Advisor {
 
 	ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain);

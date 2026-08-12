@@ -25,8 +25,29 @@ import io.micrometer.observation.ObservationConvention;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 【中文说明】ChatModelObservationConvention 是对话模型观测的"约定（Convention）"接口。
+ *
+ * <p>
+ * 在 Micrometer Observation 体系中，Convention 负责回答三个问题：
+ * <ul>
+ * <li>这次观测叫什么名字（{@code getName()}，用于指标名）；</li>
+ * <li>上下文名称是什么（{@code getContextualName()}，用于链路追踪的 span 名）；</li>
+ * <li>要打上哪些标签（低基数 {@code getLowCardinalityKeyValues()} 用于指标维度，
+ * 高基数 {@code getHighCardinalityKeyValues()} 仅用于追踪）。</li>
+ * </ul>
+ * 这些方法均继承自父接口 {@code ObservationConvention}，本接口只是把泛型固定为
+ * {@link ChatModelObservationContext}，并提供类型判断的默认实现。
+ *
+ * <p>
+ * 扩展方式：想自定义标签时，通常继承 {@code DefaultChatModelObservationConvention} 并覆写
+ * 相应的 protected 方法，然后把实例注入到 ChatModel 中，而不是从零实现本接口。
+ */
 public interface ChatModelObservationConvention extends ObservationConvention<ChatModelObservationContext> {
 
+	// 中文说明：类型守卫。Micrometer 会把所有 Convention 依次询问"你能处理这个上下文吗"，
+	// 这里通过 instanceof 判断，只认领 ChatModelObservationContext，避免误处理其他类型的观测
+	// （如 EmbeddingModel、VectorStore 的观测上下文）。
 	@Override
 	default boolean supportsContext(Observation.Context context) {
 		return context instanceof ChatModelObservationContext;

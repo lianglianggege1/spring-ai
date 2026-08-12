@@ -36,6 +36,12 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 基于 {@link ChatModel} 生成流式响应的 {@link StreamAdvisor} 实现。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public final class ChatModelStreamAdvisor implements StreamAdvisor {
 
 	private final ChatModel chatModel;

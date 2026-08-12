@@ -61,6 +61,18 @@ import org.springframework.util.StringUtils;
  * @author Christian Tzolov
  * @author Jewoo Shin
  */
+/**
+ * 顾问组件，依据配置输出类型生成的JSON Schema或预先提供的Schema字符串，
+ * 对聊天客户端返回的结构化JSON输出进行校验。
+ * <p>
+ * 校验失败时，该顾问会将校验错误信息追加到用户消息中，重新调用模型，
+ * 最多重试 {@code maxRepeatAttempts} 次。
+ * <p>
+ * 不支持流式响应。
+ *
+ * @author Christian Tzolov
+ * @author Jewoo Shin
+ */
 public final class StructuredOutputValidationAdvisor implements CallAdvisor, StreamAdvisor {
 
 	private static final Log logger = LogFactory.getLog(StructuredOutputValidationAdvisor.class);

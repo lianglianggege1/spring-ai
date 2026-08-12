@@ -28,6 +28,16 @@ import org.springframework.core.Ordered;
  * @see StreamAdvisor
  * @see BaseAdvisor
  */
+/**
+ * 所有顾问组件的父级顾问接口。
+ *
+ * @author Christian Tzolov
+ * @author Dariusz Jedrzejczyk
+ * @since 1.0.0
+ * @see CallAdvisor
+ * @see StreamAdvisor
+ * @see BaseAdvisor
+ */
 public interface Advisor extends Ordered {
 
 	/**
@@ -36,11 +46,21 @@ public interface Advisor extends Ordered {
 	 * so the memory advisor wraps the tool-call loop, and the {@code ToolCallingAdvisor}
 	 * manages its own intermediate conversation history.
 	 */
+	/**
+	 * 聊天内存顾问的默认执行顺序。置于
+	 * {@link org.springframework.ai.chat.client.advisor.ToolCallingAdvisor#DEFAULT_ORDER}
+	 * 之前（外层），使内存顾问包裹工具调用循环，而 {@code ToolCallingAdvisor}
+	 * 管理其自身的中间会话历史。
+	 */
 	int DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER = Ordered.HIGHEST_PRECEDENCE + 200;
 
 	/**
 	 * Return the name of the advisor.
 	 * @return the advisor name.
+	 */
+	/**
+	 * 返回该顾问的名称。
+	 * @return 顾问名称。
 	 */
 	String getName();
 

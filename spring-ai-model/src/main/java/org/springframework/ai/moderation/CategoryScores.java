@@ -31,7 +31,36 @@ import org.jspecify.annotations.Nullable;
  * @author Jonghoon Park
  * @since 1.0.0
  */
+/**
+ * 【中文说明】违规类别置信度分数表：给出每个审核维度的量化得分。
+ *
+ * <p>
+ * 字段与 {@link Categories} 完全一一对应，区别在于类型是 {@code double}：
+ * 取值范围 0.0 ~ 1.0，数值越高表示模型认为内容属于该类别的可能性/严重程度越高。
+ *
+ * <p>
+ * 使用场景：{@code Categories} 用的是厂商内置阈值，而本类允许业务方自定阈值做更细的管控，例如：
+ *
+ * <pre>{@code
+ * if (scores.getViolence() > 0.3) { // 比官方默认更严格
+ * 	// 走人工复审
+ * }
+ * }</pre>
+ *
+ * <p>
+ * 各字段含义（与 Categories 相同）：sexual 色情、hate 仇恨、harassment 骚扰、
+ * selfHarm 自我伤害、sexualMinors 未成年人色情、hateThreatening 威胁性仇恨、
+ * violenceGraphic 血腥暴力、selfHarmIntent 自伤意图、selfHarmInstructions 自伤教程、
+ * harassmentThreatening 威胁性骚扰、violence 暴力、dangerousAndCriminalContent 危险与犯罪、
+ * health 医疗、financial 金融、law 法律、pii 个人隐私信息。
+ *
+ * <p>
+ * 同样是 {@code final} 类 + 全 {@code final} 字段的不可变值对象，须经 {@link #builder()} 创建。
+ */
 public final class CategoryScores {
+
+	// 中文：以下 16 个字段为各违规类别的置信度分数，取值 0.0~1.0，默认 0.0。
+	// 含义与 Categories 中的同名字段一一对应，此处不再逐条重复。
 
 	private final double sexual;
 
@@ -65,6 +94,7 @@ public final class CategoryScores {
 
 	private final double pii;
 
+	// 中文：私有构造器，从 Builder 逐字段拷贝
 	private CategoryScores(Builder builder) {
 		this.sexual = builder.sexual;
 		this.hate = builder.hate;
@@ -84,10 +114,12 @@ public final class CategoryScores {
 		this.pii = builder.pii;
 	}
 
+	// 中文：创建建造器的静态入口
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	// 中文：以下均为各类别分数的只读访问器，返回 0.0~1.0 的置信度
 	public double getSexual() {
 		return this.sexual;
 	}
@@ -153,6 +185,8 @@ public final class CategoryScores {
 	}
 
 	@Override
+	// 中文：值相等比较。此处统一用 Double.compare(...) == 0 而非 ==，
+	// 这是浮点比较的标准做法——它能正确处理 NaN 与 +0.0/-0.0 这两类特殊值
 	public boolean equals(@Nullable Object o) {
 		if (this == o) {
 			return true;
@@ -176,6 +210,7 @@ public final class CategoryScores {
 	}
 
 	@Override
+	// 中文：与 equals 使用相同的 16 个字段（double 会自动装箱为 Double）
 	public int hashCode() {
 		return Objects.hash(this.sexual, this.hate, this.harassment, this.selfHarm, this.sexualMinors,
 				this.hateThreatening, this.violenceGraphic, this.selfHarmIntent, this.selfHarmInstructions,
@@ -184,6 +219,7 @@ public final class CategoryScores {
 	}
 
 	@Override
+	// 中文：调试输出，平铺展示全部类别分数
 	public String toString() {
 		return "CategoryScores{" + "sexual=" + this.sexual + ", hate=" + this.hate + ", harassment=" + this.harassment
 				+ ", selfHarm=" + this.selfHarm + ", sexualMinors=" + this.sexualMinors + ", hateThreatening="
@@ -194,8 +230,16 @@ public final class CategoryScores {
 				+ ", financial=" + this.financial + ", law=" + this.law + ", pii=" + this.pii + '}';
 	}
 
+	/**
+	 * 【中文说明】{@link CategoryScores} 的建造器。
+	 *
+	 * <p>
+	 * 所有字段可选，未设置的分数保持 double 默认值 {@code 0.0}。每个 setter 返回
+	 * {@code this} 以支持链式调用，通常由各厂商的响应转换器在解析 API 返回体时填充。
+	 */
 	public static final class Builder {
 
+		// 中文：与外部类一一对应的暂存字段，默认 0.0
 		private double sexual;
 
 		private double hate;
@@ -228,6 +272,7 @@ public final class CategoryScores {
 
 		private double pii;
 
+		// 中文：以下均为链式 setter，逐一设置对应类别的置信度分数
 		public Builder sexual(double sexual) {
 			this.sexual = sexual;
 			return this;
@@ -308,6 +353,7 @@ public final class CategoryScores {
 			return this;
 		}
 
+		// 中文：构建不可变的 CategoryScores 实例
 		public CategoryScores build() {
 			return new CategoryScores(this);
 		}

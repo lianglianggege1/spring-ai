@@ -43,6 +43,14 @@ import org.springframework.util.CollectionUtils;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 顾问组件：当用户输入包含任意敏感词时，拦截对模型服务商的调用。
+ *
+ * @author Christian Tzolov
+ * @author Ilayaperumal Gopinathan
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public class SafeGuardAdvisor implements CallAdvisor, StreamAdvisor {
 
 	private static final String DEFAULT_FAILURE_RESPONSE = "I'm unable to respond to that due to sensitive content. Could we rephrase or discuss something else?";

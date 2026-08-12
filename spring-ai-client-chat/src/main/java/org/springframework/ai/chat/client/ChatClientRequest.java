@@ -33,6 +33,14 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 代表由 {@link ChatClient} 处理的请求，最终用于构建发送给AI模型的 {@link Prompt}。
+ *
+ * @param prompt 待发送给AI模型的提示词
+ * @param context 贯穿执行调用链的上下文数据
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public record ChatClientRequest(Prompt prompt, Map<String, @Nullable Object> context) {
 
 	public ChatClientRequest {

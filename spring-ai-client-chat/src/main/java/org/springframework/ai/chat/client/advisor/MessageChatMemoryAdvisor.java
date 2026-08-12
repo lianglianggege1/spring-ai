@@ -44,6 +44,14 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 将检索到的记忆以消息集合的形式添加到提示词中
+ *
+ * @author Christian Tzolov
+ * @author Mark Pollack
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public final class MessageChatMemoryAdvisor implements BaseChatMemoryAdvisor {
 
 	private final ChatMemory chatMemory;

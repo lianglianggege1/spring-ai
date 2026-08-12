@@ -30,6 +30,18 @@ package org.springframework.ai.chat.client.advisor.api;
  * @since 2.0.0
  * @see org.springframework.ai.chat.client.advisor.api.BaseChatMemoryAdvisor
  */
+/**
+ * 用于标记管理记忆生命周期的顾问接口。实现该接口的顾问负责管理聊天记忆，
+ * 包含会话上下文的存储、读取与更新。
+ *
+ * <p>
+ * {@link org.springframework.ai.chat.client.DefaultChatClient} 通过该标记检测顾问链中是否已存在记忆顾问，
+ * 避免在 {@code ChatClient} 配置记忆管理时自动注册重复的记忆顾问。
+ *
+ * @author Christian Tzolov
+ * @since 2.0.0
+ * @see org.springframework.ai.chat.client.advisor.api.BaseChatMemoryAdvisor
+ */
 public interface MemoryAdvisor extends Advisor {
 
 }

@@ -26,6 +26,25 @@ package org.springframework.ai.model;
  * @author Mark Pollack
  * @since 0.8.0
  */
+/**
+ * 【中文说明】ModelOptions 是"模型可调参数"的<b>标记接口</b>（marker interface，无任何方法声明）。
+ *
+ * <p>
+ * 为什么是空接口：不同厂商模型的参数差异极大（OpenAI 有 frequencyPenalty，Anthropic 有 topK，
+ * 图像模型有 width/height……），无法抽象出通用方法。因此这里只用一个空接口做<b>类型标记</b>，
+ * 让框架能够在泛型签名（如 {@link ModelRequest#getOptions()}）中统一引用"某种模型选项"，
+ * 而把具体参数的定义权完全下放给各实现类。
+ *
+ * <p>
+ * 常见子接口/实现：ChatOptions、EmbeddingOptions、ImageOptions，以及各厂商的具体实现类
+ * （如 OpenAiChatOptions）。它们通常都提供 Builder 以便链式构造，并支持 copy() 做防御性拷贝。
+ *
+ * <p>
+ * 典型用法：请求级选项（放在 Prompt 里）会与客户端默认选项做<b>合并</b>，一般是请求级覆盖默认级。
+ *
+ * @author Mark Pollack
+ * @since 0.8.0
+ */
 public interface ModelOptions {
 
 }

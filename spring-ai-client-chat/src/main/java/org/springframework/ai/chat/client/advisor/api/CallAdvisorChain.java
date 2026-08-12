@@ -30,17 +30,32 @@ import org.springframework.ai.chat.client.ChatClientResponse;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * {@link CallAdvisor} 实例组成的调用链，用于编排链中下一个 {@link CallAdvisor}
+ * 执行 {@link ChatClientRequest}。
+ *
+ * @author Christian Tzolov
+ * @author Dariusz Jedrzejczyk
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface CallAdvisorChain extends AdvisorChain {
 
 	/**
 	 * Invokes the next {@link CallAdvisor} in the {@link CallAdvisorChain} with the given
 	 * request.
 	 */
+	/**
+	 * 使用给定请求调用 {@link CallAdvisorChain} 中的下一个 {@link CallAdvisor}。
+	 */
 	ChatClientResponse nextCall(ChatClientRequest chatClientRequest);
 
 	/**
 	 * Returns the list of all the {@link CallAdvisor} instances included in this chain at
 	 * the time of its creation.
+	 */
+	/**
+	 * 返回该调用链创建时所包含的全部 {@link CallAdvisor} 实例列表。
 	 */
 	List<CallAdvisor> getCallAdvisors();
 
@@ -50,6 +65,12 @@ public interface CallAdvisorChain extends AdvisorChain {
 	 * @param after the CallAdvisor after which to copy the chain
 	 * @return a new CallAdvisorChain containing all advisors after the specified advisor
 	 * @throws IllegalArgumentException if the specified advisor is not part of the chain
+	 */
+	/**
+	 * 创建一个新的 CallAdvisorChain 副本，包含指定顾问之后的所有顾问。
+	 * @param after 以此顾问为分界，复制其后的调用链
+	 * @return 新的 CallAdvisorChain，包含指定顾问之后的全部顾问
+	 * @throws IllegalArgumentException 如果指定顾问不在该调用链中
 	 */
 	CallAdvisorChain copy(CallAdvisor after);
 

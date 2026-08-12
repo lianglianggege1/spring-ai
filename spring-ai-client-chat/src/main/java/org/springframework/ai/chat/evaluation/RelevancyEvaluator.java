@@ -31,8 +31,29 @@ import org.springframework.util.Assert;
 /**
  * Evaluates the relevancy of a response to a query based on the context provided.
  */
+/**
+ * 根据提供的上下文，评估响应内容与查询问题的相关性。
+ */
 public class RelevancyEvaluator implements Evaluator {
 
+	/**
+	 * 默认提示词模板：评估查询对应的响应是否与提供的上下文信息相符。
+	 * 仅允许返回 YES 或 NO。
+	 * 若查询对应的响应与上下文信息一致返回 YES，否则返回 NO。
+	 *
+	 * <pre>
+	 * Query:
+	 * {query}
+	 *
+	 * Response:
+	 * {response}
+	 *
+	 * Context:
+	 * {context}
+	 *
+	 * Answer:
+	 * </pre>
+	 */
 	private static final PromptTemplate DEFAULT_PROMPT_TEMPLATE = new PromptTemplate("""
 				Your task is to evaluate if the response for the query
 				is in line with the context information provided.

@@ -61,6 +61,21 @@ import org.springframework.util.Assert;
  * @author Jewoo Shin
  * @since 2.0.0
  */
+/**
+ * 递归顾问组件，禁用内部工具执行流程，转而在顾问链内部实现工具调用循环逻辑。
+ * <p>
+ * 借助 CallAdvisorChainUtil 实现顾问链的循环调用。
+ * <p>
+ * 该机制允许链中后续其他顾问对工具调用循环进行拦截处理。
+ * <p>
+ * 若提示词配置未实现
+ * {@link org.springframework.ai.model.tool.ToolCallingChatOptions}（例如模型本身不支持工具调用），
+ * 该顾问会直接将请求透传给下一个顾问，不做任何修改。
+ *
+ * @author Christian Tzolov
+ * @author Jewoo Shin
+ * @since 2.0.0
+ */
 public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvisor {
 
 	private static final ChatClientMessageAggregator CHAT_CLIENT_MESSAGE_AGGREGATOR = new ChatClientMessageAggregator();
@@ -70,6 +85,11 @@ public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvis
 	 * {@link org.springframework.ai.chat.client.advisor.api.Advisor#DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER}
 	 * (+200) so that memory advisors at their default order are placed outside this
 	 * advisor and do not participate in each tool-call iteration.
+	 */
+	/**
+	 * 默认顾问执行顺序。该值高于
+	 * {@link org.springframework.ai.chat.client.advisor.api.Advisor#DEFAULT_CHAT_MEMORY_PRECEDENCE_ORDER}
+	 *（+200），保证使用默认顺序的记忆顾问置于本顾问外层，不会参与每一轮工具调用迭代。
 	 */
 	public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 300;
 
@@ -84,6 +104,12 @@ public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvis
 	 * Set the order close to {@link Ordered#LOWEST_PRECEDENCE} to ensure an advisor is
 	 * executed first in the chain (first for request processing, last for response
 	 * processing).
+	 * <p>
+	 * https://docs.spring.io/spring-ai/reference/api/advisors.html#_advisor_order
+	 */
+	/**
+	 * 将执行顺序设置为接近 {@link Ordered#LOWEST_PRECEDENCE}，
+	 * 确保该顾问在链中最先执行（请求处理阶段最先执行，响应处理阶段最后执行）。
 	 * <p>
 	 * https://docs.spring.io/spring-ai/reference/api/advisors.html#_advisor_order
 	 */
@@ -291,6 +317,10 @@ public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvis
 	 * Handles tool call detection and recursion after streaming completes. Returns empty
 	 * flux if no tool call, or recursive stream if tool call detected.
 	 */
+	/**
+	 * 在流式响应结束后处理工具调用检测与递归逻辑。
+	 * 如果未检测到工具调用则返回空Flux；检测到工具调用则返回递归流式数据流。
+	 */
 	private Flux<ChatClientResponse> handleToolCallRecursion(ChatClientResponse aggregatedResponse,
 			ChatClientRequest finalRequest, StreamAdvisorChain streamAdvisorChain, ChatClientRequest originalRequest,
 			ToolCallingChatOptions optionsCopy, UsageAccumulator usageAccumulator) {
@@ -358,6 +388,12 @@ public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvis
 	 * @param streamAdvisorChain the stream advisor chain
 	 * @return the potentially modified request
 	 */
+	/**
+	 * 流式工具调用循环开始时执行的钩子方法。子类可重写该方法来自定义初始化逻辑。
+	 * @param chatClientRequest 初始请求对象
+	 * @param streamAdvisorChain 流式顾问链
+	 * @return 经过可能修改后的请求对象
+	 */
 	protected ChatClientRequest doInitializeLoopStream(ChatClientRequest chatClientRequest,
 			StreamAdvisorChain streamAdvisorChain) {
 		return chatClientRequest;
@@ -369,6 +405,12 @@ public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvis
 	 * @param chatClientRequest the request about to be processed
 	 * @param streamAdvisorChain the stream advisor chain
 	 * @return the potentially modified request
+	 */
+	/**
+	 * 工具调用循环中，每次流式调用执行前触发的钩子方法。子类可重写该方法自定义调用前置逻辑。
+	 * @param chatClientRequest 待处理的请求对象
+	 * @param streamAdvisorChain 流式顾问链
+	 * @return 经过可能修改后的请求对象
 	 */
 	protected ChatClientRequest doBeforeStream(ChatClientRequest chatClientRequest,
 			StreamAdvisorChain streamAdvisorChain) {
@@ -382,11 +424,23 @@ public class ToolCallingAdvisor implements CallAdvisor, StreamAdvisor, ToolAdvis
 	 * @param streamAdvisorChain the stream advisor chain
 	 * @return the potentially modified response
 	 */
+	/**
+	 * 工具调用循环中，每次流式调用执行后触发的钩子方法。子类可重写该方法自定义调用后置逻辑。
+	 * @param chatClientResponse 流式调用响应对象
+	 * @param streamAdvisorChain 流式顾问链
+	 * @return 经过可能修改后的响应对象
+	 */
 	protected ChatClientResponse doAfterStream(ChatClientResponse chatClientResponse,
 			StreamAdvisorChain streamAdvisorChain) {
 		return chatClientResponse;
 	}
 
+	/**
+	 * 工具调用循环结束时执行的钩子方法。子类可重写该方法来自定义最终处理逻辑。
+	 * @param chatClientResponseFlux 流式响应数据流
+	 * @param streamAdvisorChain 流式顾问链
+	 * @return 经过可能修改后的响应数据流
+	 */
 	/**
 	 * Hook method called at the end of the streaming tool call loop to finalize the
 	 * response. Subclasses can override to customize finalization behavior.

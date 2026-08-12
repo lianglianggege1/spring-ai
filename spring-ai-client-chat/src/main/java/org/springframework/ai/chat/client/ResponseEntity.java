@@ -30,6 +30,17 @@ import org.jspecify.annotations.Nullable;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 代表 {@link org.springframework.ai.model.Model} 的响应，包含完整返回结果以及指定类型的实体对象。
+ *
+ * @param <R> 完整响应对象类型
+ * @param <E> 转换后的实体对象类型
+ * @param response 完整响应对象
+ * @param entity 转换后的实体对象
+ * @author Christian Tzolov
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public record ResponseEntity<R, E>(@Nullable R response, @Nullable E entity) {
 
 	public @Nullable R getResponse() {

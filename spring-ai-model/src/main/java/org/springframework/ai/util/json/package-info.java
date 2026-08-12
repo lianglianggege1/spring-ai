@@ -14,6 +14,20 @@
  * limitations under the License.
  */
 
+/**
+ * 【中文说明】JSON 解析相关的工具包。
+ *
+ * <p>
+ * 本包目前仅包含 {@code JsonParser}——一个已标记 {@code @Deprecated(forRemoval = true)} 的过渡适配层，
+ * 其所有方法都转调 {@code JacksonUtils} 与 {@code JsonHelper}。阅读源码时若在其他模块看到
+ * {@code JsonParser.xxx()} 调用，可直接对照新类理解其行为。
+ *
+ * <p>
+ * 子包 {@code schema} 承载 JSON Schema 生成能力，是工具调用（Function Calling）声明参数结构的基础。
+ *
+ * <p>
+ * 包上的 {@link org.jspecify.annotations.NullMarked @NullMarked} 表示默认非空语义。
+ */
 @NullMarked
 package org.springframework.ai.util.json;
 

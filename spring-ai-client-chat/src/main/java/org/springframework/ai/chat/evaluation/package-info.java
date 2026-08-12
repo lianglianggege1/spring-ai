@@ -27,7 +27,15 @@
  * This bounded context is designed to encapsulate all aspects of chat-based AI
  * functionalities, maintaining a clear boundary from other contexts within the AI domain.
  */
-
+/**
+ * org.sf.ai.chat 包代表生成式AI模型领域中，对话模型的限界上下文。
+ * 该包扩展了 org.sf.ai.generative 中定义的核心领域，提供面向对话式生成AI交互的专属实现。
+ * <p>
+ * 遵循领域驱动设计(DDD)原则，本包包含对话上下文专属的实体与值对象实现，
+ * 例如 ChatPrompt、ChatResponse，贴合AI模型对话交互的统一领域语言。
+ * <p>
+ * 该限界上下文用于封装全部对话相关AI能力，与AI领域内其他上下文保持清晰边界。
+ */
 @NullMarked
 package org.springframework.ai.chat.evaluation;
 

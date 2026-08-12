@@ -20,6 +20,12 @@ package org.springframework.ai.chat.messages;
  * Enumeration representing types of {@link Message Messages} in a chat application. It
  * can be one of the following: USER, ASSISTANT, SYSTEM, FUNCTION.
  */
+/**
+ * 消息类型枚举：定义聊天应用中 {@link Message} 的角色类型。
+ *
+ * <p>可选值：USER（用户）、ASSISTANT（助手）、SYSTEM（系统）、TOOL（工具）。
+ * {@link #getValue()} 返回的小写字符串会直接用于大模型 API 请求体的 role 字段。
+ */
 public enum MessageType {
 
 	/**
@@ -27,11 +33,19 @@ public enum MessageType {
 	 * from an end-user or developer.
 	 * @see UserMessage
 	 */
+	/**
+	 * 用户消息：归属用户角色，由终端用户或开发者发出。
+	 * @see UserMessage
+	 */
 	USER("user"),
 
 	/**
 	 * A {@link Message} of type {@literal assistant} passed in subsequent input
 	 * {@link Message Messages} as the {@link Message} generated in response to the user.
+	 * @see AssistantMessage
+	 */
+	/**
+	 * 助手消息：作为对用户的应答生成，可传入后续对话中。
 	 * @see AssistantMessage
 	 */
 	ASSISTANT("assistant"),
@@ -42,11 +56,19 @@ public enum MessageType {
 	 * like a certain character or provide answers in a specific format.
 	 * @see SystemMessage
 	 */
+	/**
+	 * 系统消息：对话的顶层指令（如设定角色、规定回答格式）。
+	 * @see SystemMessage
+	 */
 	SYSTEM("system"),
 
 	/**
 	 * A {@link Message} of type {@literal function} passed as input {@link Message
 	 * Messages} with function content in a chat application.
+	 * @see ToolResponseMessage
+	 */
+	/**
+	 * 工具消息：承载函数/工具调用相关内容，作为对话输入回传。
 	 * @see ToolResponseMessage
 	 */
 	TOOL("tool");

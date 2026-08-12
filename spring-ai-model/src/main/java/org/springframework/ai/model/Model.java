@@ -28,6 +28,35 @@ package org.springframework.ai.model;
  * @author Mark Pollack
  * @since 0.8.0
  */
+/**
+ * 【中文说明】Model 是 Spring AI 中所有"同步调用型"AI 模型的最顶层抽象接口。
+ *
+ * <p>
+ * 用途：把"发请求 -> 拿响应"这一通用交互过程抽象出来，屏蔽不同厂商（OpenAI、Ollama、
+ * Anthropic 等）模型 API 的差异，使上层代码只依赖统一契约而非具体实现。
+ *
+ * <p>
+ * 关键泛型参数：
+ * <ul>
+ * <li>{@code TReq} —— 请求类型，必须是 {@link ModelRequest} 的子类型，例如 ChatModel 对应的
+ * Prompt、EmbeddingModel 对应的 EmbeddingRequest。</li>
+ * <li>{@code TRes} —— 响应类型，必须是 {@link ModelResponse} 的子类型，例如 ChatResponse、
+ * EmbeddingResponse。</li>
+ * </ul>
+ *
+ * <p>
+ * 注意这里使用了"有界泛型 + 通配符"（{@code ModelRequest<?>}）的写法：只约束请求/响应必须遵循
+ * Spring AI 的统一结构，但不限制其内部承载的具体数据类型，从而兼顾类型安全与灵活性。
+ *
+ * <p>
+ * 典型用法：ChatModel、EmbeddingModel、ImageModel 等都直接或间接继承本接口；对应的流式版本
+ * 请参见 {@link StreamingModel}。业务代码通常注入具体的子接口（如 ChatModel）而非本接口。
+ *
+ * @param <TReq> 发送给 AI 模型的请求泛型类型
+ * @param <TRes> AI 模型返回的响应泛型类型
+ * @author Mark Pollack
+ * @since 0.8.0
+ */
 public interface Model<TReq extends ModelRequest<?>, TRes extends ModelResponse<?>> {
 
 	/**
@@ -35,6 +64,8 @@ public interface Model<TReq extends ModelRequest<?>, TRes extends ModelResponse<
 	 * @param request the request object to be sent to the AI model
 	 * @return the response from the AI model
 	 */
+	// 【中文】以阻塞（同步）方式调用 AI 模型：传入请求对象，等待模型处理完毕后一次性返回完整响应。
+	// 若需要边生成边接收的流式效果，请改用 StreamingModel#stream。
 	TRes call(TReq request);
 
 }

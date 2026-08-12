@@ -33,6 +33,12 @@ import org.springframework.util.Assert;
  * @author Christian Tzolov
  * @since 1.0.0
  */
+/**
+ * {@link AdvisorObservationConvention} 的默认实现。
+ *
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public class DefaultAdvisorObservationConvention implements AdvisorObservationConvention {
 
 	public static final String DEFAULT_NAME = "spring.ai.advisor";

@@ -32,6 +32,14 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 代表 {@link ChatClient} 返回的响应结果。
+ *
+ * @param chatResponse AI模型返回的响应数据
+ * @param context 在执行调用链中传递的上下文数据
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public record ChatClientResponse(@Nullable ChatResponse chatResponse, Map<String, @Nullable Object> context) {
 
 	public ChatClientResponse {

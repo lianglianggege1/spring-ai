@@ -56,6 +56,18 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * DefaultChatClientBuilder 是用于创建 ChatClient 的构建器类。
+ * <p>
+ * 提供方法为 ChatClient 的各项属性设置默认值。
+ *
+ * @author Mark Pollack
+ * @author Christian Tzolov
+ * @author Josh Long
+ * @author Arjen Poutsma
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public class DefaultChatClientBuilder implements Builder {
 
 	protected final DefaultChatClientRequestSpec defaultRequest;
@@ -94,6 +106,25 @@ public class DefaultChatClientBuilder implements Builder {
 	 * @param toolCallingAdvisorBuilder optional builder for the
 	 * {@link org.springframework.ai.chat.client.advisor.ToolCallingAdvisor}; when
 	 * {@code null} a default is created
+	 */
+	/**
+	 * 创建一个新的 {@link DefaultChatClientBuilder}。
+	 * <p>
+	 * 如果 {@code toolCallingAdvisorBuilder} 为 {@code null}，则会创建默认的
+	 * {@link org.springframework.ai.chat.client.advisor.ToolCallingAdvisor}，
+	 * 其内部 {@link ToolCallingManager} 使用传入的 {@code observationRegistry} 作为支撑。
+	 * <p>
+	 * 如果 {@code toolCallingAdvisorBuilder} 不为 null，则直接使用该构建器实例。
+	 * 调用方需要自行配置该构建器内部的 {@link ToolCallingManager}，
+	 * 包括 {@link io.micrometer.observation.ObservationRegistry}，传入的 {@code observationRegistry}
+	 * 不会自动对其生效。
+	 * @param chatModel 要使用的对话模型
+	 * @param observationRegistry 客户端级别观测指标的注册器；
+	 * 当 {@code toolCallingAdvisorBuilder} 为 {@code null} 时，也用于配置默认的 {@code ToolCallingManager}
+	 * @param chatClientObservationConvention 可选，聊天客户端自定义观测约定
+	 * @param advisorObservationConvention 可选，顾问组件自定义观测约定
+	 * @param toolCallingAdvisorBuilder 可选，{@link org.springframework.ai.chat.client.advisor.ToolCallingAdvisor} 的构建器；
+	 * 为 {@code null} 时会创建默认实例
 	 */
 	public DefaultChatClientBuilder(ChatModel chatModel, ObservationRegistry observationRegistry,
 			@Nullable ChatClientObservationConvention chatClientObservationConvention,
@@ -187,7 +218,7 @@ public class DefaultChatClientBuilder implements Builder {
 	}
 
 	public Builder defaultSystem(Consumer<PromptSystemSpec> systemSpecConsumer) {
-		this.defaultRequest.system(systemSpecConsumer);
+		this.defaultRequest .system(systemSpecConsumer);
 		return this;
 	}
 

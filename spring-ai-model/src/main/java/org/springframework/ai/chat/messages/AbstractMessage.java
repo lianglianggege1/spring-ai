@@ -31,26 +31,40 @@ import org.springframework.util.Assert;
  *
  * @see Message
  */
+/**
+ * 抽象消息基类：实现 {@link Message} 接口，为所有具体消息类型提供公共字段与行为。
+ *
+ * <p>收口了三个核心字段（messageType / textContent / metadata）、构造校验以及 equals/hashCode，
+ * 子类只需关注自身特有字段（如 UserMessage 的 media、AssistantMessage 的 toolCalls）。
+ *
+ * @see Message
+ */
 public abstract class AbstractMessage implements Message {
 
 	/**
 	 * The key for the message type in the metadata.
+	 */
+	/**
+	 * 元数据中用于标记消息类型的 key，值为 {@link MessageType}。
 	 */
 	public static final String MESSAGE_TYPE = "messageType";
 
 	/**
 	 * The message type of the message.
 	 */
+	/** 消息类型（即角色：USER / ASSISTANT / SYSTEM / TOOL）。 */
 	protected final MessageType messageType;
 
 	/**
 	 * The content of the message.
 	 */
+	/** 文本内容，可能为 null 或空串。 */
 	protected final @Nullable String textContent;
 
 	/**
 	 * Additional options for the message to influence the response, not a generative map.
 	 */
+	/** 元数据：携带影响响应或用于序列化/反序列化的附加属性。 */
 	protected final Map<String, Object> metadata;
 
 	/**
@@ -62,19 +76,26 @@ public abstract class AbstractMessage implements Message {
 	 */
 	protected AbstractMessage(MessageType messageType, @Nullable String textContent, Map<String, Object> metadata) {
 		Assert.notNull(messageType, "Message type must not be null");
+		// SYSTEM 与 USER 消息必须有文本内容，否则对话无实质内容
 		if (messageType == MessageType.SYSTEM || messageType == MessageType.USER) {
 			Assert.notNull(textContent, "Content must not be null for SYSTEM or USER messages");
 		}
 		Assert.notNull(metadata, "Metadata must not be null");
 		this.messageType = messageType;
 		this.textContent = textContent;
+		// 防御性拷贝，避免外部修改影响内部状态
 		this.metadata = new HashMap<>(metadata);
+		// 把消息类型回写进元数据，便于序列化后仍能还原成正确的子类
 		this.metadata.put(MESSAGE_TYPE, messageType);
 	}
 
 	/**
 	 * Get the content of the message.
 	 * @return the content of the message
+	 */
+	/**
+	 * 获取消息的文本内容。
+	 * @return 文本内容
 	 */
 	@Override
 	public @Nullable String getText() {
@@ -85,6 +106,10 @@ public abstract class AbstractMessage implements Message {
 	 * Get the metadata of the message.
 	 * @return the metadata of the message
 	 */
+	/**
+	 * 获取消息的元数据。
+	 * @return 元数据
+	 */
 	@Override
 	public Map<String, Object> getMetadata() {
 		return this.metadata;
@@ -93,6 +118,10 @@ public abstract class AbstractMessage implements Message {
 	/**
 	 * Get the message type of the message.
 	 * @return the message type of the message
+	 */
+	/**
+	 * 获取消息类型。
+	 * @return 消息类型
 	 */
 	@Override
 	public MessageType getMessageType() {

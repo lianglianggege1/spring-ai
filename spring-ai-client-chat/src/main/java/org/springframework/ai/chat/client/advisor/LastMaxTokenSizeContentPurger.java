@@ -31,6 +31,13 @@ import org.springframework.ai.tokenizer.TokenCountEstimator;
  * @author Christian Tzolov
  * @since 1.0.0 M1
  */
+/**
+ * 返回新的内容列表（例如消息列表或文档列表），该列表为输入内容列表的子集，
+ * 并且满足最大Token数量限制。使用Token估算器估算每条数据的Token数量。
+ *
+ * @author Christian Tzolov
+ * @since 1.0.0 M1
+ */
 public class LastMaxTokenSizeContentPurger {
 
 	protected final TokenCountEstimator tokenCountEstimator;

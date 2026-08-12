@@ -29,6 +29,14 @@ import org.springframework.util.StreamUtils;
  *
  * @author Thomas Vitale
  */
+/**
+ * 消息内部工具类：负责把 {@link org.springframework.core.io.Resource} 读取为字符串，
+ * 供 SystemMessage / UserMessage 用文件内容作为消息文本。
+ *
+ * <p>final + 私有构造器，纯工具类，不可实例化。
+ *
+ * @author Thomas Vitale
+ */
 final class MessageUtils {
 
 	private MessageUtils() {
@@ -38,6 +46,9 @@ final class MessageUtils {
 		return readResource(resource, Charset.defaultCharset());
 	}
 
+	/**
+	 * 读取资源内容为字符串（指定字符集）。
+	 */
 	static String readResource(Resource resource, Charset charset) {
 		Assert.notNull(resource, "resource cannot be null");
 		Assert.notNull(charset, "charset cannot be null");
@@ -45,6 +56,7 @@ final class MessageUtils {
 			return StreamUtils.copyToString(inputStream, charset);
 		}
 		catch (IOException ex) {
+			// 读取失败属于不可恢复的配置/环境问题，包装为 RuntimeException 抛出
 			throw new RuntimeException("Failed to read resource", ex);
 		}
 	}

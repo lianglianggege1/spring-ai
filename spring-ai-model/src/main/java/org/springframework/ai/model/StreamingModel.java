@@ -31,6 +31,33 @@ import reactor.core.publisher.Flux;
  * @author Christian Tzolov
  * @since 0.8.0
  */
+/**
+ * 【中文说明】StreamingModel 是 Spring AI 中所有"流式调用型"AI 模型的顶层抽象接口，
+ * 是 {@link Model} 的流式对应版本。
+ *
+ * <p>
+ * 用途：模型（尤其是大语言模型）生成内容通常是逐 token 产出的，本接口用 Reactor 的
+ * {@link Flux} 把这些增量片段以响应式流的形式推送给调用方，从而实现"打字机"效果，
+ * 显著降低用户感知延迟。
+ *
+ * <p>
+ * 关键泛型参数：
+ * <ul>
+ * <li>{@code TReq} —— 请求类型，与同步版本完全一致（如 Prompt），说明流式与非流式共用同一套请求模型。</li>
+ * <li>{@code TResChunk} —— 注意这里是"流中的单个数据块"的类型，而不是整体响应。它同样被约束为
+ * {@link ModelResponse} 子类型（如 ChatResponse），即每个片段本身也是一个结构完整的响应对象，
+ * 只不过其中承载的内容是增量的一小段。</li>
+ * </ul>
+ *
+ * <p>
+ * 典型用法：ChatModel 同时继承 {@code Model} 和 {@code StreamingModel}，调用方可按需在
+ * {@code call()} 与 {@code stream()} 之间切换。
+ *
+ * @param <TReq> 发送给 AI 模型的请求泛型类型
+ * @param <TResChunk> 流式响应中单个数据块的泛型类型
+ * @author Christian Tzolov
+ * @since 0.8.0
+ */
 public interface StreamingModel<TReq extends ModelRequest<?>, TResChunk extends ModelResponse<?>> {
 
 	/**
@@ -38,6 +65,9 @@ public interface StreamingModel<TReq extends ModelRequest<?>, TResChunk extends 
 	 * @param request the request object to be sent to the AI model
 	 * @return the streaming response from the AI model
 	 */
+	// 【中文】以流式（非阻塞）方式调用 AI 模型，返回一个 Flux 响应式流。
+	// 返回的 Flux 一般是"冷流"（cold stream）：只有被订阅时才真正发起对模型的请求；
+	// 每订阅一次就会触发一次独立调用，因此不要重复订阅同一个 Flux 以免产生多次计费。
 	Flux<TResChunk> stream(TReq request);
 
 }

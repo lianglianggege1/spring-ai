@@ -25,8 +25,24 @@ import io.micrometer.observation.ObservationConvention;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 嵌入模型观测约定的接口，是 Micrometer {@link ObservationConvention} 的类型化特化版本。
+ *
+ * <p>
+ * 它把泛型参数固定为 {@link EmbeddingModelObservationContext}，并提供
+ * {@code supportsContext} 的默认实现，使自定义约定只需关心"打什么标签"，
+ * 无需重复编写类型判断代码。
+ *
+ * <p>
+ * 默认实现见 {@link DefaultEmbeddingModelObservationConvention}；
+ * 若需自定义指标名或标签，实现本接口并注入到 EmbeddingModel 即可。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface EmbeddingModelObservationConvention extends ObservationConvention<EmbeddingModelObservationContext> {
 
+	// 默认实现：仅当上下文类型匹配时才应用本约定，避免误处理其它模型类型的观测
 	@Override
 	default boolean supportsContext(Observation.Context context) {
 		return context instanceof EmbeddingModelObservationContext;

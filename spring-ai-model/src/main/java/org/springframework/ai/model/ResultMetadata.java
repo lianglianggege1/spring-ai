@@ -26,6 +26,25 @@ package org.springframework.ai.model;
  * @author Mark Pollack
  * @since 0.8.0
  */
+/**
+ * 【中文说明】ResultMetadata 是"单条结果元数据"的<b>标记接口</b>（空接口，无方法）。
+ *
+ * <p>
+ * 用途：为 {@link ModelResult#getMetadata()} 提供统一的返回类型。由于不同模态能提供的
+ * 逐条元数据差别很大（聊天有 finishReason，嵌入几乎没有额外信息，图像有修订后的提示词等），
+ * 所以同样采用空标记接口的设计，把字段定义留给子类型。
+ *
+ * <p>
+ * 典型实现：ChatGenerationMetadata（含 finishReason、contentFilters）、
+ * EmbeddingResultMetadata、ImageGenerationMetadata 等。
+ *
+ * <p>
+ * 注意与 {@link ResponseMetadata} 区分：本接口描述"一条结果"，后者描述"整次调用"，
+ * 且后者是带 Map 语义的、有实际方法的接口。
+ *
+ * @author Mark Pollack
+ * @since 0.8.0
+ */
 public interface ResultMetadata {
 
 }

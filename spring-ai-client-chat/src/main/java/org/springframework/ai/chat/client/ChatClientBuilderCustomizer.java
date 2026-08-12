@@ -26,12 +26,25 @@ package org.springframework.ai.chat.client;
  * @author Arjen Poutsma
  * @since 2.0.0
  */
+/**
+ * 回调接口，用于自定义 {@link ChatClient.Builder} 构建器。
+ *
+ * @author Christian Tzolov
+ * @author Mark Pollack
+ * @author Josh Long
+ * @author Arjen Poutsma
+ * @since 2.0.0
+ */
 @FunctionalInterface
 public interface ChatClientBuilderCustomizer {
 
 	/**
 	 * Callback to customize a {@link ChatClient.Builder ChatClient.Builder} instance.
 	 * @param chatClientBuilder the client builder to customize
+	 */
+	/**
+	 * 用于自定义 {@link ChatClient.Builder} 实例的回调。
+	 * @param chatClientBuilder 待自定义的客户端构建器
 	 */
 	void customize(ChatClient.Builder chatClientBuilder);
 

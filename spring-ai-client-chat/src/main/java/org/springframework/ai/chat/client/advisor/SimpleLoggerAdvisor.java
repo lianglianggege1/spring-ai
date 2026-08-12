@@ -38,6 +38,11 @@ import org.springframework.ai.util.JacksonUtils;
  *
  * @author Christian Tzolov
  */
+/**
+ * 简易日志顾问，用于打印请求与响应消息日志。
+ *
+ * @author Christian Tzolov
+ */
 public class SimpleLoggerAdvisor implements CallAdvisor, StreamAdvisor {
 
 	public static final Function<@Nullable ChatClientRequest, String> DEFAULT_REQUEST_TO_STRING = chatClientRequest -> chatClientRequest != null

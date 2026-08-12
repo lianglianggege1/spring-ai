@@ -34,6 +34,12 @@ import org.springframework.util.StringUtils;
  * @author Jonatan Ivanov
  * @since 1.1.0
  */
+/**
+ * 处理器，用于将聊天客户端完成后的输出内容打印到日志。
+ *
+ * @author Jonatan Ivanov
+ * @since 1.1.0
+ */
 public class ChatClientCompletionObservationHandler implements ObservationHandler<ChatClientObservationContext> {
 
 	private static final Log logger = LogFactory.getLog(ChatClientCompletionObservationHandler.class);

@@ -87,6 +87,21 @@ import org.springframework.util.StringUtils;
  * @author Sebastien Deleuze
  * @since 1.0.0
  */
+/**
+ * {@link ChatClient} 的默认实现，由 {@link Builder#build()} 方法创建。
+ *
+ * @author Mark Pollack
+ * @author Christian Tzolov
+ * @author Josh Long
+ * @author Arjen Poutsma
+ * @author Soby Chacko
+ * @author Dariusz Jedrzejczyk
+ * @author Thomas Vitale
+ * @author Jonatan Ivanov
+ * @author Wenli Tian
+ * @author Sebastien Deleuze
+ * @since 1.0.0
+ */
 public class DefaultChatClient implements ChatClient {
 
 	private static final ChatClientObservationConvention DEFAULT_CHAT_CLIENT_OBSERVATION_CONVENTION = new DefaultChatClientObservationConvention();
@@ -141,6 +156,10 @@ public class DefaultChatClient implements ChatClient {
 	/**
 	 * Return a {@link ChatClient.Builder} to create a new {@link ChatClient} whose
 	 * settings are replicated from this {@link ChatClientRequest}.
+	 */
+	/**
+	 * 返回 {@link ChatClient.Builder}，用于创建新的 {@link ChatClient}，
+	 * 新客户端配置复制自当前 {@link ChatClientRequest}。
 	 */
 	@Override
 	public Builder mutate() {
@@ -399,6 +418,9 @@ public class DefaultChatClient implements ChatClient {
 
 	/**
 	 * Default implementation of {@link EntityParamSpec}.
+	 */
+	/**
+	 * {@link EntityParamSpec} 的默认实现。
 	 */
 	public static class DefaultEntityParamSpec implements EntityParamSpec {
 
@@ -1213,6 +1235,13 @@ public class DefaultChatClient implements ChatClient {
 		 * {@link MemoryAdvisor} with a higher order (i.e. downstream in the request
 		 * direction) is already registered, since that memory advisor will handle history
 		 * for every tool-call iteration.
+		 */
+		/**
+		 * 自动注册 {@link ToolCallingAdvisor}，以下两种情况除外：已关闭自动注册，或调用链中已存在 {@link ToolAdvisor}。
+		 * 该顾问始终会被注册，确保即便本次调用未配置静态工具，也能正确处理由其他顾问在运行时动态注入的工具。
+		 * <p>
+		 * 当已注册优先级更高（请求流向中处于下游）的 {@link MemoryAdvisor} 时，会禁用该顾问内部的会话历史维护逻辑，
+		 * 由该内存顾问负责每一轮工具调用迭代的历史管理。
 		 */
 		private void autoRegisterToolCallingAdvisor() {
 

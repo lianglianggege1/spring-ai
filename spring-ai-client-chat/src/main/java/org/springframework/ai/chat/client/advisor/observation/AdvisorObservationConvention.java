@@ -25,7 +25,12 @@ import io.micrometer.observation.ObservationConvention;
  * @author Christian Tzolov
  * @since 1.0.0
  */
-
+/**
+ * 聊天客户端顾问对应的 {@link ObservationConvention} 接口。
+ *
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public interface AdvisorObservationConvention extends ObservationConvention<AdvisorObservationContext> {
 
 	@Override

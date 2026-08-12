@@ -30,6 +30,13 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 用于存储聊天客户端顾问元数据的上下文。
+ *
+ * @author Christian Tzolov
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public class AdvisorObservationContext extends Observation.Context {
 
 	private final String advisorName;

@@ -27,6 +27,18 @@ import org.springframework.ai.model.ResponseMetadata;
  * @author Ahmed Yousri
  * @since 1.0.0
  */
+/**
+ * 【中文说明】整个审核响应的元数据。
+ *
+ * <p>
+ * 继承 {@code AbstractResponseMetadata} 获得一份基于 Map 的键值对存储能力（可放入
+ * 请求 ID、限流信息、用量统计等厂商自定义数据），同时实现 {@code ResponseMetadata} 接口以纳入
+ * Spring AI 统一的元数据体系。
+ *
+ * <p>
+ * 类体为空，说明公共层没有额外字段——所有能力均由父类提供，此类的价值在于给审核场景一个
+ * 专属类型，便于各厂商继承扩展。
+ */
 public class ModerationResponseMetadata extends AbstractResponseMetadata implements ResponseMetadata {
 
 }

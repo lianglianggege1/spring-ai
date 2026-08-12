@@ -69,8 +69,54 @@ import org.springframework.util.Assert;
  * @see EvaluationResponse
  * @since 1.0.0
  */
+/**
+ * {@link Evaluator} 的实现类，用于依据给定上下文评估大语言模型（LLM）输出内容的事实准确性。
+ * <p>
+ * 该评估器用于解决大模型输出中一类典型问题：基于给定素材场景下的“幻觉”现象。
+ * 校验目标：判断待验证陈述（claim）是否能够被提供的上下文文档（document）逻辑支撑。
+ * <p>
+ * 核心概念：
+ * - Document：用于校验陈述的上下文/基准参考资料。
+ * - Claim：需要依据文档进行核验的陈述内容。
+ * <p>
+ * 该评估器采用基于提示词的方案，调用独立的、通常体积更小、效率更高的大模型完成事实校验。
+ * 该设计兼顾成本与校验速度，非常适合评估长文本大模型输出（可能需要多轮校验）。
+ * <p>
+ * 实现提示：为兼顾校验效率与准确率，建议使用专用模型，例如 Bespoke‑Minicheck。
+ * 它是 Bespoke Labs 开发的事实校验模型，可在 Ollama 中使用。该模型专门用于校验其他大模型输出，帮助识别并减少幻觉问题。
+ * 参考资料：
+ * <a href="https://ollama.com/blog/reduce-hallucinations-with-bespoke-minicheck">使用 Bespoke‑Minicheck 减少幻觉</a>
+ * 以及学术论文：
+ * <a href="https://arxiv.org/pdf/2404.10774v1">MiniCheck：一种高效的大模型幻觉检测方案</a>
+ * <p>
+ * 注意：本评估器仅用于“有参考资料”的事实校验。
+ * 不适用其他准确性测试场景，例如不给任何参考材料，直接让 AI 回答冷门知识（即闭集测试场景）。
+ * <p>
+ * 评估逻辑：判断陈述是否被文档内容所支撑，返回布尔值标识事实校验是否通过。
+ *
+ * @author Eddú Meléndez
+ * @author Mark Pollack
+ * @author guan xu
+ * @author Yanming Zhou
+ * @see Evaluator
+ * @see EvaluationRequest
+ * @see EvaluationResponse
+ * @since 1.0.0
+ */
 public class FactCheckingEvaluator implements Evaluator {
 
+	/**
+	 * 默认评估提示词文本：判断给定声明是否能够被文档内容所支撑。
+	 * 返回 "yes" 代表声明得到文档支持，返回 "no" 代表不被支持。
+	 *
+	 * <pre>
+	 * Document:
+	 * {document}
+	 *
+	 * Claim:
+	 * {claim}
+	 * </pre>
+	 */
 	private static final String DEFAULT_EVALUATION_PROMPT_TEXT = """
 				Evaluate whether or not the following claim is supported by the provided document.
 				Respond with "yes" if the claim is supported, or "no" if it is not.
@@ -82,6 +128,17 @@ public class FactCheckingEvaluator implements Evaluator {
 				{claim}
 			""";
 
+	/**
+	 * Bespoke模型专用评估提示词文本，仅传入文档与待校验声明，交由Bespoke‑Minicheck模型完成事实校验。
+	 *
+	 * <pre>
+	 * Document:
+	 * {document}
+	 *
+	 * Claim:
+	 * {claim}
+	 * </pre>
+	 */
 	private static final String BESPOKE_EVALUATION_PROMPT_TEXT = """
 				Document:
 				{document}
@@ -101,6 +158,11 @@ public class FactCheckingEvaluator implements Evaluator {
 	 * evaluation
 	 * @param evaluationPrompt The prompt text to use for evaluation
 	 */
+	/**
+	 * 使用传入的 ChatClient 构建器与评估提示词，构造新的 FactCheckingEvaluator 实例。
+	 * @param chatClientBuilder 用于执行评估任务的 ChatClient 构建器
+	 * @param evaluationPrompt 评估所使用的提示词文本
+	 */
 	protected FactCheckingEvaluator(ChatClient.Builder chatClientBuilder, @Nullable String evaluationPrompt) {
 		Assert.notNull(chatClientBuilder, "chatClientBuilder cannot be null");
 		this.chatClientBuilder = chatClientBuilder;
@@ -113,6 +175,11 @@ public class FactCheckingEvaluator implements Evaluator {
 	 * @param chatClientBuilder The builder for the ChatClient used to perform the
 	 * evaluation
 	 * @return A FactCheckingEvaluator configured for Bespoke Minicheck
+	 */
+	/**
+	 * 创建适配 Bespoke Minicheck 模型的 FactCheckingEvaluator 实例。
+	 * @param chatClientBuilder 用于执行评估任务的 ChatClient 构建器
+	 * @return 适配 Bespoke Minicheck 的 FactCheckingEvaluator 对象
 	 */
 	public static FactCheckingEvaluator forBespokeMinicheck(ChatClient.Builder chatClientBuilder) {
 		return FactCheckingEvaluator.builder(chatClientBuilder)
@@ -127,6 +194,11 @@ public class FactCheckingEvaluator implements Evaluator {
 	 * the supporting context
 	 * @return An EvaluationResponse indicating whether the claim is supported by the
 	 * document
+	 */
+	/**
+	 * 评估 EvaluationRequest 中的响应内容是否能够被同请求内提供的上下文事实性地支撑。
+	 * @param evaluationRequest 包含待评估响应以及参考上下文的请求对象
+	 * @return EvaluationResponse，标识声明是否被文档内容所支持
 	 */
 	@Override
 	public EvaluationResponse evaluate(EvaluationRequest evaluationRequest) {

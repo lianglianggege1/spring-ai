@@ -17,6 +17,24 @@
 /**
  * Provides classes for observing image data.
  */
+/**
+ * 图像模型调用的可观测性（Observability）支持包，基于 Micrometer Observation 构建。
+ * <p>
+ * 主要类型：
+ * <ul>
+ * <li>{@link org.springframework.ai.image.observation.ImageModelObservationContext}
+ * —— 观测上下文，承载请求与响应。</li>
+ * <li>{@link org.springframework.ai.image.observation.ImageModelObservationConvention}
+ * 及其默认实现 —— 决定观测名称与标签。</li>
+ * <li>{@link org.springframework.ai.image.observation.ImageModelObservationDocumentation}
+ * —— 文档化声明全部标签名。</li>
+ * <li>{@link org.springframework.ai.image.observation.ImageModelPromptContentObservationHandler}
+ * —— 可选处理器，把提示词内容打到日志。</li>
+ * </ul>
+ * 协作关系：模型调用时创建 Context → Convention 从中提取 KeyValues → 生成 metrics 与 tracing span。
+ * <p>
+ * 包上的 {@code @NullMarked}（JSpecify）表示本包内类型默认非空，仅显式标注 {@code @Nullable} 处可为 null。
+ */
 @NullMarked
 package org.springframework.ai.image.observation;
 

@@ -39,6 +39,18 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 基础顾问类，实现 {@link CallAdvisor} 与 {@link StreamAdvisor} 的通用逻辑，
+ * 减少实现顾问所需的样板代码。
+ * <p>
+ * 该类为 {@link #adviseCall(ChatClientRequest, CallAdvisorChain)} 与
+ * {@link #adviseStream(ChatClientRequest, StreamAdvisorChain)} 方法提供默认实现，
+ * 将实际业务逻辑委托给 {@link #before(ChatClientRequest, AdvisorChain advisorChain)}
+ * 和 {@link #after(ChatClientResponse, AdvisorChain advisorChain)} 方法。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public interface BaseAdvisor extends CallAdvisor, StreamAdvisor {
 
 	Scheduler DEFAULT_SCHEDULER = Schedulers.boundedElastic();
@@ -81,15 +93,24 @@ public interface BaseAdvisor extends CallAdvisor, StreamAdvisor {
 	/**
 	 * Logic to be executed before the rest of the advisor chain is called.
 	 */
+	/**
+	 * 在执行顾问链其余逻辑之前运行的业务逻辑。
+	 */
 	ChatClientRequest before(ChatClientRequest chatClientRequest, AdvisorChain advisorChain);
 
 	/**
 	 * Logic to be executed after the rest of the advisor chain is called.
 	 */
+	/**
+	 * 在顾问链其余逻辑执行完毕后运行的业务逻辑。
+	 */
 	ChatClientResponse after(ChatClientResponse chatClientResponse, AdvisorChain advisorChain);
 
 	/**
 	 * Scheduler used for processing the advisor logic when streaming.
+	 */
+	/**
+	 * 流式处理时用于执行顾问逻辑的调度器。
 	 */
 	default Scheduler getScheduler() {
 		return DEFAULT_SCHEDULER;

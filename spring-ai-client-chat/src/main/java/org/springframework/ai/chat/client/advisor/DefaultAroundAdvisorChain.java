@@ -56,6 +56,15 @@ import org.springframework.util.CollectionUtils;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * {@link BaseAdvisorChain} 的默认实现。由 {@link ChatClient} 使用，
+ * 将调用委托给链中的下一个 {@link CallAdvisor} 或 {@link StreamAdvisor}。
+ *
+ * @author Christian Tzolov
+ * @author Dariusz Jedrzejczyk
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public class DefaultAroundAdvisorChain implements BaseAdvisorChain {
 
 	public static final AdvisorObservationConvention DEFAULT_OBSERVATION_CONVENTION = new DefaultAdvisorObservationConvention();

@@ -17,6 +17,9 @@
 /**
  * Provides classes for observing chat data.
  */
+/**
+ * 提供用于观测聊天数据的相关类。
+ */
 @NullMarked
 package org.springframework.ai.chat.client.observation;
 

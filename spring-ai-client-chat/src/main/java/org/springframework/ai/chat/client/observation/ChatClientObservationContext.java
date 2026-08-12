@@ -39,6 +39,14 @@ import org.springframework.util.StringUtils;
  * @author Jonatan Ivanov
  * @since 1.0.0
  */
+/**
+ * 上下文对象，用于存储聊天客户端工作流的元数据。
+ *
+ * @author Christian Tzolov
+ * @author Thomas Vitale
+ * @author Jonatan Ivanov
+ * @since 1.0.0
+ */
 public class ChatClientObservationContext extends Observation.Context {
 
 	private final ChatClientRequest request;

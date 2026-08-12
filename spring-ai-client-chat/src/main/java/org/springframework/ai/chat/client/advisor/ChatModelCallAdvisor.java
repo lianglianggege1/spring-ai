@@ -40,6 +40,13 @@ import org.springframework.util.StringUtils;
  * @author Christian Tzolov
  * @since 1.0.0
  */
+/**
+ * 基于 {@link ChatModel} 生成响应的 {@link CallAdvisor} 实现。
+ *
+ * @author Thomas Vitale
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public final class ChatModelCallAdvisor implements CallAdvisor {
 
 	private final ChatModel chatModel;

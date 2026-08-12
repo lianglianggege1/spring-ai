@@ -34,6 +34,13 @@ import org.springframework.util.CollectionUtils;
  * @author Jonatan Ivanov
  * @since 1.0.0
  */
+/**
+ * 处理器，负责将聊天客户端的提示词内容输出到日志。
+ *
+ * @author Thomas Vitale
+ * @author Jonatan Ivanov
+ * @since 1.0.0
+ */
 public class ChatClientPromptContentObservationHandler implements ObservationHandler<ChatClientObservationContext> {
 
 	private static final Log logger = LogFactory.getLog(ChatClientPromptContentObservationHandler.class);

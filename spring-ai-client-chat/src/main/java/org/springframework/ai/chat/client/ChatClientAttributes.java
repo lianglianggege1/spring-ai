@@ -22,6 +22,12 @@ package org.springframework.ai.chat.client;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * {@link ChatClient} 上下文所使用的通用属性。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public enum ChatClientAttributes {
 
 	//@formatter:off

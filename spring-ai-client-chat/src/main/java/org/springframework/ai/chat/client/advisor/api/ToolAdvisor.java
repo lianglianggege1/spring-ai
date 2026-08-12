@@ -30,6 +30,18 @@ package org.springframework.ai.chat.client.advisor.api;
  * @since 2.0.0
  * @see org.springframework.ai.chat.client.advisor.ToolCallingAdvisor
  */
+/**
+ * 标记接口，用于标识负责工具调用生命周期的顾问。实现该接口的顾问承担工具执行、
+ * 驱动工具调用循环的职责，替代模型内部的工具执行流程。
+ *
+ * <p>
+ * {@link org.springframework.ai.chat.client.DefaultChatClient} 通过该标记检测顾问链中是否已存在工具调用处理顾问，
+ * 避免自动注册重复的顾问实例。
+ *
+ * @author Christian Tzolov
+ * @since 2.0.0
+ * @see org.springframework.ai.chat.client.advisor.ToolCallingAdvisor
+ */
 public interface ToolAdvisor extends Advisor {
 
 }

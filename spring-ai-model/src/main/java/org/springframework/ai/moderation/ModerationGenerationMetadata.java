@@ -26,6 +26,17 @@ import org.springframework.ai.model.ResultMetadata;
  * @author Ahmed Yousri
  * @since 1.0.0
  */
+/**
+ * 【中文说明】单条审核结果的元数据接口。
+ *
+ * <p>
+ * 继承自通用的 {@code ResultMetadata}，用于承载与「单个生成结果」相关的附加信息。
+ *
+ * <p>
+ * 这里是一个<b>空接口（标记接口）</b>——公共层不预设任何字段，纯粹起类型约束作用，
+ * 由各厂商实现按需扩展。{@code Generation} 类中用匿名实现
+ * {@code new ModerationGenerationMetadata(){}} 作为「无元数据」的默认空对象。
+ */
 public interface ModerationGenerationMetadata extends ResultMetadata {
 
 }

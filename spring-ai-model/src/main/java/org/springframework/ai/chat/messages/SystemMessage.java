@@ -32,16 +32,30 @@ import org.springframework.util.StringUtils;
  * generative to behave like a certain character or to provide answers in a specific
  * format.
  */
+/**
+ * 系统消息：作为对话的顶层指令输入（role = system）。通常放在对话最前面，用来设定模型整体行为，
+ * 例如"扮演某角色"或"以特定格式回答"。由开发者控制，不来自终端用户。由于系统消息必须有文本内容，
+ * 构造时若文本为空会被父类校验拦截。
+ */
 public class SystemMessage extends AbstractMessage {
 
+	/**
+	 * 便捷构造器：用文本创建系统消息（无元数据）。
+	 */
 	public SystemMessage(@Nullable String textContent) {
 		this(textContent, Map.of());
 	}
 
+	/**
+	 * 用资源（如提示词文件）内容作为系统指令文本。
+	 */
 	public SystemMessage(Resource resource) {
 		this(MessageUtils.readResource(resource), Map.of());
 	}
 
+	/**
+	 * 私有全参构造器。
+	 */
 	private SystemMessage(@Nullable String textContent, Map<String, Object> metadata) {
 		super(MessageType.SYSTEM, textContent, metadata);
 	}
@@ -71,10 +85,16 @@ public class SystemMessage extends AbstractMessage {
 				+ ", metadata=" + this.metadata + '}';
 	}
 
+	/**
+	 * 复制一份相同的系统消息（拷贝元数据）。
+	 */
 	public SystemMessage copy() {
 		return new SystemMessage(getText(), Map.copyOf(this.metadata));
 	}
 
+	/**
+	 * 基于当前消息创建可变 Builder，用于调整字段而不修改原对象。
+	 */
 	public Builder mutate() {
 		Builder builder = new Builder();
 		if (this.textContent != null) {
@@ -84,10 +104,16 @@ public class SystemMessage extends AbstractMessage {
 		return builder;
 	}
 
+	/**
+	 * 创建空 Builder。
+	 */
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	/**
+	 * 建造者：流式构造 SystemMessage。
+	 */
 	public static final class Builder {
 
 		private @Nullable String textContent;
@@ -111,6 +137,9 @@ public class SystemMessage extends AbstractMessage {
 			return this;
 		}
 
+		/**
+		 * 构建 SystemMessage。文本与资源互斥，同时设置抛异常；仅设置资源时读取其内容作为文本。
+		 */
 		public SystemMessage build() {
 			if (StringUtils.hasText(this.textContent) && this.resource != null) {
 				throw new IllegalArgumentException("textContent and resource cannot be set at the same time");

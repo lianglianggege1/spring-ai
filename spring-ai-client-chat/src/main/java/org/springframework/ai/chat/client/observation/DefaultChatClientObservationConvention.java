@@ -36,6 +36,13 @@ import org.springframework.util.StringUtils;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 用于填充聊天客户端工作流观测指标的默认约定实现。
+ *
+ * @author Christian Tzolov
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public class DefaultChatClientObservationConvention implements ChatClientObservationConvention {
 
 	public static final String DEFAULT_NAME = "spring.ai.chat.client";

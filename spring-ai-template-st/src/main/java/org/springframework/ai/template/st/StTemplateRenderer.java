@@ -54,6 +54,22 @@ import org.springframework.util.Assert;
  * @author Sun Yuhan
  * @since 1.0.0
  */
+/**
+ * 基于StringTemplate（ST）v4库实现模板渲染器。
+ *
+ * <p>
+ * 该渲染器支持自定义占位符分隔符、模板变量缺失时的校验策略，以及校验阶段对StringTemplate内置函数的处理方式。
+ *
+ * <p>
+ * 可通过{@link #builder()}方法创建并配置该类实例。
+ *
+ * <p>
+ * <b>线程安全：</b>该类支持多线程并发调用。每次调用{@link #apply(String, Map)}都会新建StringTemplate实例，线程间不存在共享可变状态。
+ *
+ * @author Thomas Vitale
+ * @author Sun Yuhan
+ * @since 1.0.0
+ */
 public class StTemplateRenderer implements TemplateRenderer {
 
 	private static final Log logger = LogFactory.getLog(StTemplateRenderer.class);
@@ -87,6 +103,13 @@ public class StTemplateRenderer implements TemplateRenderer {
 	 * null
 	 * @param validateStFunctions whether to validate StringTemplate functions in the
 	 * template
+	 */
+	/**
+	 * 根据指定的分隔符标识、校验模式、函数校验标记，构造全新的{@code StTemplateRenderer}实例。
+	 * @param startDelimiterToken 模板变量起始标识字符，示例：'{'
+	 * @param endDelimiterToken 模板变量结束标识字符，示例：'}'
+	 * @param validationMode 模板变量的校验模式，不可为null
+	 * @param validateStFunctions 是否校验模板内的StringTemplate内置函数
 	 */
 	public StTemplateRenderer(char startDelimiterToken, char endDelimiterToken, ValidationMode validationMode,
 			boolean validateStFunctions) {
@@ -130,6 +153,12 @@ public class StTemplateRenderer implements TemplateRenderer {
 	 * @param st the StringTemplate instance
 	 * @param templateVariables the provided variables
 	 * @return set of missing variable names, or empty set if none are missing
+	 */
+	/**
+	 * 校验数据模型中是否提供了所有必填模板变量，返回缺失变量集合，用于后续处理或日志记录。
+	 * @param st StringTemplate实例对象
+	 * @param templateVariables 传入的模板变量集合
+	 * @return 缺失变量名集合；若无缺失变量则返回空集合
 	 */
 	private Set<String> validate(ST st, Map<String, ? extends @Nullable Object> templateVariables) {
 		Set<String> templateTokens = getInputVariables(st);
@@ -221,6 +250,11 @@ public class StTemplateRenderer implements TemplateRenderer {
 		 * @param startDelimiterToken The start delimiter character.
 		 * @return This builder instance for chaining.
 		 */
+		/**
+		 * 设置模板表达式的起始分隔符字符，默认值为'{'。
+		 * @param startDelimiterToken 起始分隔符字符
+		 * @return 当前构建器实例，支持链式调用
+		 */
 		public Builder startDelimiterToken(char startDelimiterToken) {
 			this.startDelimiterToken = startDelimiterToken;
 			return this;
@@ -231,6 +265,11 @@ public class StTemplateRenderer implements TemplateRenderer {
 		 * is '}'.
 		 * @param endDelimiterToken The end delimiter character.
 		 * @return This builder instance for chaining.
+		 */
+		/**
+		 * 设置模板表达式的结束分隔符字符，默认值为'}'。
+		 * @param endDelimiterToken 结束分隔符字符
+		 * @return 当前构建器实例，支持链式调用
 		 */
 		public Builder endDelimiterToken(char endDelimiterToken) {
 			this.endDelimiterToken = endDelimiterToken;
@@ -243,6 +282,11 @@ public class StTemplateRenderer implements TemplateRenderer {
 		 * {@link ValidationMode#THROW}.
 		 * @param validationMode The desired validation mode.
 		 * @return This builder instance for chaining.
+		 */
+		/**
+		 * 设置校验模式，用于控制传入变量与模板所需变量不匹配时的执行逻辑，默认模式为{@link ValidationMode#THROW}。
+		 * @param validationMode 目标校验模式
+		 * @return 当前构建器实例，支持链式调用
 		 */
 		public Builder validationMode(ValidationMode validationMode) {
 			this.validationMode = validationMode;
@@ -262,6 +306,14 @@ public class StTemplateRenderer implements TemplateRenderer {
 		 * ({@link ValidationMode#WARN} or {@link ValidationMode#THROW}).
 		 * @return This builder instance for chaining.
 		 */
+		/**
+		 * 配置渲染器在校验阶段是否兼容StringTemplate内置函数。
+		 * <p>
+		 * 开启（设为true）时，模板中匹配ST内置函数名（如first、rest、length）的标识符，在校验时不会被判定为必填入参变量。
+		 * <p>
+		 * 关闭（默认false）时，此类标识符会被视作普通变量；若校验模式为{@link ValidationMode#WARN}或{@link ValidationMode#THROW}，则必须在入参Map中定义对应变量。
+		 * @return 当前构建器实例，支持链式调用
+		 */
 		public Builder validateStFunctions() {
 			this.validateStFunctions = true;
 			return this;
@@ -271,6 +323,10 @@ public class StTemplateRenderer implements TemplateRenderer {
 		 * Builds and returns a new {@link StTemplateRenderer} instance with the
 		 * configured settings.
 		 * @return A configured {@link StTemplateRenderer}.
+		 */
+		/**
+		 * 根据已配置参数构建并返回全新的{@link StTemplateRenderer}实例。
+		 * @return 配置完成的StTemplateRenderer对象
 		 */
 		public StTemplateRenderer build() {
 			return new StTemplateRenderer(this.startDelimiterToken, this.endDelimiterToken, this.validationMode,

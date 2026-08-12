@@ -34,6 +34,15 @@ import org.springframework.ai.chat.model.MessageAggregator;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * 流式聊天响应辅助工具，将聊天响应消息片段聚合为一条完整的 AssistantMessage。
+ * 该聚合任务与聊天响应处理过程并行执行。
+ *
+ * @author Christian Tzolov
+ * @author Alexandros Pappas
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
 public class ChatClientMessageAggregator {
 
 	@SuppressWarnings("NullAway") // https://github.com/uber/NullAway/issues/1350

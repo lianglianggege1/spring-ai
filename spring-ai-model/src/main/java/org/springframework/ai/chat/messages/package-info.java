@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * 聊天消息包：定义 Spring AI 对话系统中「消息」的核心抽象与具体类型。
+ *
+ * <p>包含：{@link Message} 接口、{@link AbstractMessage} 基类、{@link MessageType} 角色枚举，
+ * 以及四种具体消息 {@link UserMessage}/{@link AssistantMessage}/{@link SystemMessage}/{@link ToolResponseMessage}，
+ * 另有内部工具类 {@link MessageUtils}。
+ */
 @NullMarked
 package org.springframework.ai.chat.messages;
 

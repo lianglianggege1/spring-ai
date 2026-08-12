@@ -30,10 +30,20 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0
  */
+/**
+ * 聊天记忆顾问的基础接口。
+ *
+ * @author Mark Pollack
+ * @author Thomas Vitale
+ * @since 1.0
+ */
 public interface BaseChatMemoryAdvisor extends BaseAdvisor, MemoryAdvisor {
 
 	/**
 	 * Retrieve the conversation ID from the given context.
+	 */
+	/**
+	 * 从给定上下文获取会话ID。
 	 */
 	default String getConversationId(Map<String, @Nullable Object> context) {
 		Assert.notNull(context, "context cannot be null");

@@ -34,10 +34,25 @@ import org.springframework.util.CollectionUtils;
  * @author Jonatan Ivanov
  * @since 1.0.0
  */
+/**
+ * 【中文说明】ChatModelPromptContentObservationHandler 是一个观测处理器，负责把发送给模型的"提示词内容"打印到日志。
+ *
+ * <p>
+ * 触发时机：观测结束时（{@code onStop}）统一输出，而非请求发出时。
+ *
+ * <p>
+ * 重要提醒：提示词往往包含用户输入、业务数据甚至个人隐私，因此该 Handler 默认<b>不启用</b>，
+ * 需通过配置项显式开启（如 {@code spring.ai.chat.observations.log-prompt=true}），
+ * 生产环境请谨慎使用。
+ *
+ * <p>
+ * 与 {@code ChatModelCompletionObservationHandler}（记录模型回复）配套使用，一个记录输入、一个记录输出。
+ */
 public class ChatModelPromptContentObservationHandler implements ObservationHandler<ChatModelObservationContext> {
 
 	private static final Log logger = LogFactory.getLog(ChatModelPromptContentObservationHandler.class);
 
+	// 中文说明：观测结束时回调。同样先判断 isInfoEnabled，避免日志未开启时做无谓的拼接开销
 	@Override
 	public void onStop(ChatModelObservationContext context) {
 		if (logger.isInfoEnabled()) {
@@ -45,14 +60,19 @@ public class ChatModelPromptContentObservationHandler implements ObservationHand
 		}
 	}
 
+	// 中文说明：抽取 Prompt 中所有消息（instructions）的文本内容。
+	// 注意这里只取 getRequest()，而请求在上下文创建时就已确定，故无需像 response 那样判 null，
+	// 只需用 CollectionUtils.isEmpty 处理"消息列表为空"的情况，为空则返回不可变空列表。
 	private List<String> prompt(ChatModelObservationContext context) {
 		if (CollectionUtils.isEmpty(context.getRequest().getInstructions())) {
 			return List.of();
 		}
 
+		// 中文说明：Message 继承自 Content 接口，这里统一按 Content::getText 提取纯文本
 		return context.getRequest().getInstructions().stream().map(Content::getText).toList();
 	}
 
+	// 中文说明：类型守卫，只处理对话模型的观测上下文
 	@Override
 	public boolean supportsContext(Observation.Context context) {
 		return context instanceof ChatModelObservationContext;

@@ -27,6 +27,23 @@ import org.springframework.ai.document.Document;
  * @author Soby Chacko
  * @since 1.0.0
  */
+/**
+ * 文档分批策略接口：把一大批 {@link Document} 拆成若干"子批次"，以优化嵌入调用。
+ *
+ * <p>
+ * 存在的原因：嵌入模型 API 通常对<b>单次请求的 token 总数</b>和<b>条目数</b>有上限，
+ * 一次性把上千篇文档丢过去会直接报错。该接口把切分逻辑抽象出来，便于替换不同策略。
+ *
+ * <p>
+ * 关键约束：<b>必须保持文档的原始顺序</b>。因为返回的向量是按输入顺序一一对应回填到 Document 的，
+ * 顺序错乱会导致文档与向量张冠李戴。
+ *
+ * <p>
+ * 典型实现：{@link TokenCountBatchingStrategy}（按 token 数上限累加切分）。
+ *
+ * @author Soby Chacko
+ * @since 1.0.0
+ */
 public interface BatchingStrategy {
 
 	/**
@@ -37,6 +54,7 @@ public interface BatchingStrategy {
 	 * @param documents to batch
 	 * @return a list of sub-batches that contain {@link Document}s.
 	 */
+	// 将文档列表切分为多个子批次；实现方必须保证切分前后文档的相对顺序不变
 	List<List<Document>> batch(List<Document> documents);
 
 }

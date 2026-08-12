@@ -34,27 +34,57 @@ import org.springframework.ai.model.ModelResponse;
  * @author Ahmed Yousri
  * @since 1.0.0
  */
+/**
+ * 【中文说明】审核响应：{@link ModerationModel#call} 的返回值，是最外层的结果容器。
+ *
+ * <p>
+ * 内部只持有<b>一个</b> {@link Generation}（审核场景一次只处理一条输入），
+ * 但为了兼容 {@code ModelResponse} 接口「结果可能有多个」的通用约定，
+ * 同时提供了单个与列表两种读取方式。
+ *
+ * <p>
+ * 关键字段：
+ * <ul>
+ * <li>{@code generation} —— 审核结果项，可为 null（如调用失败或无结果）</li>
+ * <li>{@code moderationResponseMetadata} —— 响应级元数据，非空</li>
+ * </ul>
+ *
+ * <p>
+ * 典型用法：
+ *
+ * <pre>{@code
+ * ModerationResponse resp = moderationModel.call(prompt);
+ * Moderation m = resp.getResult().getOutput();
+ * }</pre>
+ */
 public class ModerationResponse implements ModelResponse<Generation> {
 
+	// 中文：响应级元数据，构造时必定赋值，非空
 	private final ModerationResponseMetadata moderationResponseMetadata;
 
+	// 中文：唯一的审核结果项。标注 @Nullable，取用前建议判空
 	private final @Nullable Generation generation;
 
+	// 中文：简易构造器，自动创建一个空的元数据对象，避免 metadata 为 null
 	public ModerationResponse(@Nullable Generation generation) {
 		this(generation, new ModerationResponseMetadata());
 	}
 
+	// 中文：完整构造器
 	public ModerationResponse(@Nullable Generation generation, ModerationResponseMetadata moderationResponseMetadata) {
 		this.moderationResponseMetadata = moderationResponseMetadata;
 		this.generation = generation;
 	}
 
 	@Override
+	// 中文：获取唯一结果项，可能为 null
 	public @Nullable Generation getResult() {
 		return this.generation;
 	}
 
 	@Override
+	// 中文：以列表形式返回结果，用于适配 ModelResponse 的通用契约。
+	// 空值处理：generation 为 null 时返回空列表而非含 null 的列表，保证调用方可安全遍历
 	public List<Generation> getResults() {
 		if (this.generation == null) {
 			return Collections.emptyList();
@@ -63,6 +93,7 @@ public class ModerationResponse implements ModelResponse<Generation> {
 	}
 
 	@Override
+	// 中文：获取响应级元数据
 	public ModerationResponseMetadata getMetadata() {
 		return this.moderationResponseMetadata;
 	}
@@ -74,6 +105,8 @@ public class ModerationResponse implements ModelResponse<Generation> {
 	}
 
 	@Override
+	// 中文：按元数据 + 结果项做值比较。注意 Generation 未覆写 equals，
+	// 因此这里实际退化为对 generation 的引用比较
 	public boolean equals(@Nullable Object o) {
 		if (this == o) {
 			return true;
@@ -86,6 +119,7 @@ public class ModerationResponse implements ModelResponse<Generation> {
 	}
 
 	@Override
+	// 中文：与 equals 保持字段一致
 	public int hashCode() {
 		return Objects.hash(this.moderationResponseMetadata, this.generation);
 	}

@@ -27,9 +27,33 @@ import org.springframework.ai.model.Model;
  * @author Ahmed Yousri
  * @since 1.0.0
  */
+/**
+ * 【中文说明】内容审核模型接口：内容合规检查能力的统一抽象。
+ *
+ * <p>
+ * 它继承自 Spring AI 的通用泛型接口 {@code Model<TReq, TRes>}，把请求类型固化为
+ * {@link ModerationPrompt}、响应类型固化为 {@link ModerationResponse}，
+ * 从而与 ChatModel、ImageModel、EmbeddingModel 等保持一致的编程模型。
+ *
+ * <p>
+ * 只有一个 {@code call} 方法，因此标注了 {@link FunctionalInterface}，可用 Lambda 实现，
+ * 在单元测试中很方便地伪造一个审核模型。
+ *
+ * <p>
+ * 典型用法：
+ *
+ * <pre>{@code
+ * ModerationResponse resp = moderationModel.call(new ModerationPrompt("待检测的文本"));
+ * boolean flagged = resp.getResult().getOutput().getResults().get(0).isFlagged();
+ * }</pre>
+ *
+ * <p>
+ * 具体实现由各厂商 starter 提供，例如 OpenAI 的 {@code OpenAiModerationModel}。
+ */
 @FunctionalInterface
 public interface ModerationModel extends Model<ModerationPrompt, ModerationResponse> {
 
+	// 中文：执行一次内容审核调用。同步阻塞，返回包含各违规类别判定与分数的完整响应
 	ModerationResponse call(ModerationPrompt request);
 
 }

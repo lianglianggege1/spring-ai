@@ -18,6 +18,23 @@
  * Provides the API for embedding observations.
  */
 
+/**
+ * 嵌入（embedding）能力的核心 API 包。
+ *
+ * <p>
+ * 主要成员：
+ * <ul>
+ * <li>{@link org.springframework.ai.embedding.EmbeddingModel}：核心接口，文本 -&gt; 向量；</li>
+ * <li>{@link org.springframework.ai.embedding.AbstractEmbeddingModel}：带维度缓存的抽象基类；</li>
+ * <li>请求/响应模型：{@code EmbeddingRequest}、{@code EmbeddingResponse}、{@code Embedding}；</li>
+ * <li>参数体系：{@code EmbeddingOptions} 及其默认实现与构建器；</li>
+ * <li>分批策略：{@code BatchingStrategy} 与 {@code TokenCountBatchingStrategy}。</li>
+ * </ul>
+ *
+ * <p>
+ * 包级注解 {@code @NullMarked}（JSpecify）表示：本包内所有类型<b>默认不可为 null</b>，
+ * 只有显式标注 {@code @Nullable} 的地方才允许为 null，便于静态分析工具做空指针检查。
+ */
 @NullMarked
 package org.springframework.ai.embedding;
 
