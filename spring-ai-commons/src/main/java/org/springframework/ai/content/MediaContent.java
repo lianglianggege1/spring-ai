@@ -23,6 +23,9 @@ public interface MediaContent extends Content {
 	/**
 	 * Get the media associated with the content.
 	 */
+	/**
+	 * 获取与内容关联的媒体资源。
+	 */
 	List<Media> getMedia();
 
 }

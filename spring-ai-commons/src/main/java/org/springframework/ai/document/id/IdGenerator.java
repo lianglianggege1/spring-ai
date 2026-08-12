@@ -22,6 +22,12 @@ package org.springframework.ai.document.id;
  * @author Aliakbar Jafarpour
  * @author Christian Tzolov
  */
+/**
+ * 用于生成文档唯一ID的接口。
+ *
+ * @author Aliakbar Jafarpour
+ * @author Christian Tzolov
+ */
 public interface IdGenerator {
 
 	/**
@@ -29,6 +35,11 @@ public interface IdGenerator {
 	 * random generator might not depend on or use the content parameters.
 	 * @param contents the content to generate an ID for.
 	 * @return the generated ID.
+	 */
+	/**
+	 * 为给定内容生成唯一ID。注意：部分生成器（例如随机生成器）可能不依赖或不使用该内容参数。
+	 * @param contents 需要生成ID的内容
+	 * @return 生成的唯一ID
 	 */
 	String generateId(Object... contents);
 

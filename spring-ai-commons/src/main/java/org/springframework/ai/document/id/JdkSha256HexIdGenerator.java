@@ -32,6 +32,12 @@ import org.springframework.util.Assert;
  * @author Aliakbar Jafarpour
  * @author Christian Tzolov
  */
+/**
+ * 基于SHA‑256的ID生成器，将哈希值转换为UUID格式返回。
+ *
+ * @author Aliakbar Jafarpour
+ * @author Christian Tzolov
+ */
 public class JdkSha256HexIdGenerator implements IdGenerator {
 
 	private static final String SHA_256 = "SHA-256";

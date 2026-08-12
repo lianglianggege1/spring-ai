@@ -29,17 +29,34 @@ import org.jspecify.annotations.Nullable;
  * @author Christian Tzolov
  * @since 1.0.0
  */
+/**
+ * 包含内容与元数据的数据结构。
+ * 是 {@link org.springframework.ai.document.Document} 和
+ * {@link org.springframework.ai.chat.messages.Message} 的公共父接口。
+ *
+ * @author Mark Pollack
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public interface Content {
 
 	/**
 	 * Get the content of the message.
 	 * @return the content of the message
 	 */
+	/**
+	 * 获取消息的内容。
+	 * @return 消息内容
+	 */
 	@Nullable String getText();
 
 	/**
 	 * Get the metadata associated with the content.
 	 * @return the metadata associated with the content
+	 */
+	/**
+	 * 获取与内容关联的元数据。
+	 * @return 内容对应的元数据
 	 */
 	Map<String, Object> getMetadata();
 

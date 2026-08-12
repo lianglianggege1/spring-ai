@@ -70,6 +70,45 @@ import org.springframework.util.MimeType;
  * @author Ilayaperumal Gopinathan
  * @since 1.0.0
  */
+/**
+ * Media 类代表消息中媒体附件的数据与元信息。
+ * 包含MIME类型、原始数据，以及id、name等可选元数据。
+ *
+ * <p>
+ * Media 对象可用于 UserMessage，用来挂载图片、文档、视频等各类内容。
+ * 和大模型交互时，id与name字段用于追踪、引用指定媒体资源。
+ *
+ * <p>
+ * id 字段一般由大模型侧分配，用于引用已经上传过的媒体。
+ *
+ * <p>
+ * name 字段用于向模型提供可读标识，但需要注意防范提示词注入风险。
+ * 在 AWS 环境下，name仅允许使用以下字符：
+ * <ul>
+ * <li>字母数字字符</li>
+ * <li>空白字符（不允许连续多个）</li>
+ * <li>连字符</li>
+ * <li>圆括号</li>
+ * <li>方括号</li>
+ * </ul>
+ * 注意：本类不会强制校验该约束。
+ *
+ * <p>
+ * 如果未传入name，会按照模板自动生成：{@code {mimeType.subtype}-{UUID}}
+ *
+ * <p>
+ * 本类包含内部类 {@link Format}，提供常用MIME类型常量，按文档、视频、图片分类。
+ * 构建Media对象时可以直接使用这些常量，保证MIME类型填写正确。
+ *
+ * <p>
+ * 该类作为入参用于 UserMessage 的构造方法。
+ *
+ * @author Christian Tzolov
+ * @author Mark Pollack
+ * @author Thomas Vitale
+ * @author Ilayaperumal Gopinathan
+ * @since 1.0.0
+ */
 public class Media {
 
 	private static final String NAME_PREFIX = "media-";
@@ -77,6 +116,9 @@ public class Media {
 	/**
 	 * An Id of the media object, usually defined when the model returns a reference to
 	 * media it has been passed.
+	 */
+	/**
+	 * 媒体对象的ID。通常在模型引用已传入的媒体资源时生成。
 	 */
 	private final @Nullable String id;
 
@@ -101,12 +143,32 @@ public class Media {
 	 * <li>Square brackets
 	 * </ul>
 	 */
+	/**
+	 * 媒体对象的名称，可供AI模型进行引用。
+	 * <p>
+	 * 重要安全提示：该字段存在提示词注入风险，模型有可能误将名称识别为指令。
+	 * 建议使用无特殊语义的中性名称。
+	 * <p>
+	 * 名称仅允许包含以下字符：
+	 * <ul>
+	 * <li>字母数字字符</li>
+	 * <li>空白字符（不允许连续多个）</li>
+	 * <li>连字符</li>
+	 * <li>圆括号</li>
+	 * <li>方括号</li>
+	 * </ul>
+	 */
 	private final String name;
 
 	/**
 	 * Create a new Media instance.
 	 * @param mimeType the media MIME type
 	 * @param uri the URI for the media data
+	 */
+	/**
+	 * 创建一个新的 Media 实例。
+	 * @param mimeType 媒体资源的MIME类型
+	 * @param uri 媒体数据的资源定位地址
 	 */
 	public Media(MimeType mimeType, URI uri) {
 		Assert.notNull(mimeType, "MimeType must not be null");
@@ -121,6 +183,11 @@ public class Media {
 	 * Create a new Media instance.
 	 * @param mimeType the media MIME type
 	 * @param resource the media resource
+	 */
+	/**
+	 * 创建一个新的 Media 实例。
+	 * @param mimeType 媒体资源的MIME类型
+	 * @param resource 媒体资源
 	 */
 	public Media(MimeType mimeType, Resource resource) {
 		Assert.notNull(mimeType, "MimeType must not be null");
@@ -141,6 +208,10 @@ public class Media {
 	 * Creates a new Media builder.
 	 * @return a new Media builder instance
 	 */
+	/**
+	 * 创建 Media 的构建器实例。
+	 * @return 全新的 Media 构建器对象
+	 */
 	public static Builder builder() {
 		return new Builder();
 	}
@@ -150,6 +221,12 @@ public class Media {
 	 * @param mimeType the media MIME type
 	 * @param data the media data
 	 * @param id the media id
+	 */
+	/**
+	 * 创建一个新的 Media 实例。
+	 * @param mimeType 媒体资源的MIME类型
+	 * @param data 媒体数据
+	 * @param id 媒体ID
 	 */
 	private Media(MimeType mimeType, Object data, @Nullable String id, @Nullable String name) {
 		Assert.notNull(mimeType, "MimeType must not be null");
@@ -168,6 +245,10 @@ public class Media {
 	 * Get the media MIME type
 	 * @return the media MIME type
 	 */
+	/**
+	 * 获取媒体资源的MIME类型。
+	 * @return 媒体的MIME类型
+	 */
 	public MimeType getMimeType() {
 		return this.mimeType;
 	}
@@ -177,6 +258,10 @@ public class Media {
 	 * @return a {@link String} (URI/URL/base64), a {@code byte[]}, or a
 	 * {@link java.net.URL}
 	 */
+	/**
+	 * 获取媒体数据对象。
+	 * @return 可以是 {@link String}（URI/URL/base64）、字节数组 {@code byte[]} 或者 {@link java.net.URL}
+	 */
 	public Object getData() {
 		return this.data;
 	}
@@ -184,6 +269,10 @@ public class Media {
 	/**
 	 * Get the media data as a byte array
 	 * @return the media data as a byte array
+	 */
+	/**
+	 * 将媒体数据以字节数组形式获取。
+	 * @return 字节数组格式的媒体数据
 	 */
 	public byte[] getDataAsByteArray() {
 		if (this.data instanceof byte[]) {
@@ -198,6 +287,10 @@ public class Media {
 	 * Get the media id
 	 * @return the media id
 	 */
+	/**
+	 * 获取媒体对象ID。
+	 * @return 媒体ID
+	 */
 	public @Nullable String getId() {
 		return this.id;
 	}
@@ -206,12 +299,19 @@ public class Media {
 	 * Get the media name.
 	 * @return the media name
 	 */
+	/**
+	 * 获取媒体对象名称。
+	 * @return 媒体名称
+	 */
 	public String getName() {
 		return this.name;
 	}
 
 	/**
 	 * Builder class for Media.
+	 */
+	/**
+	 * Media 的构建器类。
 	 */
 	public static final class Builder {
 
@@ -232,6 +332,12 @@ public class Media {
 		 * @return the builder instance
 		 * @throws IllegalArgumentException if mimeType is null
 		 */
+		/**
+		 * 设置媒体对象的MIME类型。
+		 * @param mimeType 媒体的MIME类型，不能为空
+		 * @return 构建器实例
+		 * @throws IllegalArgumentException 如果mimeType为空
+		 */
 		public Builder mimeType(MimeType mimeType) {
 			Assert.notNull(mimeType, "MimeType must not be null");
 			this.mimeType = mimeType;
@@ -244,6 +350,12 @@ public class Media {
 		 * @return the builder instance
 		 * @throws IllegalArgumentException if resource is null or if reading the resource
 		 * content fails
+		 */
+		/**
+		 * 从Resource设置媒体数据。
+		 * @param resource 媒体资源，不能为空
+		 * @return 构建器实例
+		 * @throws IllegalArgumentException 如果resource为空或读取资源内容失败
 		 */
 		public Builder data(Resource resource) {
 			Assert.notNull(resource, "Data must not be null");
@@ -262,6 +374,12 @@ public class Media {
 		 * @return the builder instance
 		 * @throws IllegalArgumentException if data is null
 		 */
+		/**
+		 * 通过字节数组设置媒体数据。
+		 * @param data 媒体原始字节，不可为 null
+		 * @return 构建器实例
+		 * @throws IllegalArgumentException 当 data 为 null 时抛出
+		 */
 		public Builder data(byte[] data) {
 			Assert.notNull(data, "Data must not be null");
 			this.data = data;
@@ -275,6 +393,13 @@ public class Media {
 		 * @return the builder instance
 		 * @throws IllegalArgumentException if data is null
 		 */
+		/**
+		 * 通过字符串设置媒体数据。该值可以是URL字符串（http/https/s3），
+		 * 也可以是媒体内容的base64编码字符串。
+		 * @param data 媒体数据字符串，不可为 null
+		 * @return 构建器实例
+		 * @throws IllegalArgumentException 当 data 为 null 时抛出
+		 */
 		public Builder data(String data) {
 			Assert.notNull(data, "Data must not be null");
 			this.data = data;
@@ -286,6 +411,12 @@ public class Media {
 		 * @param uri the media URI, must not be null
 		 * @return the builder instance
 		 * @throws IllegalArgumentException if URI is null
+		 */
+		/**
+		 * 通过URI设置媒体数据。
+		 * @param uri 媒体资源URI，不可为 null
+		 * @return 构建器实例
+		 * @throws IllegalArgumentException 当 uri 为 null 时抛出
 		 */
 		public Builder data(URI uri) {
 			Assert.notNull(uri, "URI must not be null");
@@ -301,6 +432,13 @@ public class Media {
 		 * @return the builder instance
 		 * @throws IllegalArgumentException if URL is null
 		 */
+		/**
+		 * 通过URL设置媒体数据。{@link URL} 对象将原样存储，
+		 * 保留协议信息，用于下游安全校验（例如拦截非http/https协议、内网地址）。
+		 * @param url 媒体资源URL，不可为 null
+		 * @return 构建器实例
+		 * @throws IllegalArgumentException 当 url 为 null 时抛出
+		 */
 		public Builder data(URL url) {
 			Assert.notNull(url, "URL must not be null");
 			this.data = url;
@@ -312,6 +450,12 @@ public class Media {
 		 * when they return a reference to previously provided media content.
 		 * @param id the media identifier
 		 * @return the builder instance
+		 */
+		/**
+		 * 设置媒体对象的ID。
+		 * 该ID一般由AI模型分配，用于引用之前已经传入的媒体内容。
+		 * @param id 媒体资源标识符
+		 * @return 构建器实例
 		 */
 		public Builder id(String id) {
 			this.id = id;
@@ -337,6 +481,24 @@ public class Media {
 		 * @param name the media name
 		 * @return the builder instance
 		 */
+		/**
+		 * 设置媒体对象的名称。
+		 * <p>
+		 * 重要安全提示：该字段存在提示词注入风险，模型有可能误将该名称识别为指令。
+		 * 建议使用无特殊语义的中性名称。
+		 *
+		 * <p>
+		 * 名称仅允许包含以下字符：
+		 * <ul>
+		 * <li>字母数字字符</li>
+		 * <li>空白字符（不允许连续多个）</li>
+		 * <li>连字符</li>
+		 * <li>圆括号</li>
+		 * <li>方括号</li>
+		 * </ul>
+		 * @param name 媒体名称
+		 * @return 构建器实例
+		 */
 		public Builder name(String name) {
 			this.name = name;
 			return this;
@@ -346,6 +508,11 @@ public class Media {
 		 * Builds a new Media instance with the configured properties.
 		 * @return a new Media instance
 		 * @throws IllegalArgumentException if mimeType or data are null
+		 */
+		/**
+		 * 根据已配置的属性构建新的 Media 实例。
+		 * @return 全新的 Media 对象
+		 * @throws IllegalArgumentException 当MIME类型或数据为null时抛出
 		 */
 		public Media build() {
 			Assert.state(this.mimeType != null, "MimeType must not be null");

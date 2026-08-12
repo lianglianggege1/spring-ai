@@ -24,6 +24,12 @@ import java.util.UUID;
  * @author Aliakbar Jafarpour
  * @author Christian Tzolov
  */
+/**
+ * 随机ID生成器，返回UUID格式标识。
+ *
+ * @author Aliakbar Jafarpour
+ * @author Christian Tzolov
+ */
 public class RandomIdGenerator implements IdGenerator {
 
 	@Override
