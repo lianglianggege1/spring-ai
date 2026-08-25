@@ -42,6 +42,23 @@ import java.lang.annotation.Target;
  * @author Christian Tzolov
  * @see io.modelcontextprotocol.spec.McpSchema.ProgressNotification
  */
+/**
+ * 用于处理来自MCP服务器的进度通知的方法注解。该注解仅适用于MCP客户端。
+ *
+ * <p>
+ * 被该注解标记的方法可消费MCP服务器下发的进度消息。方法接收单个参数，类型为 {@code ProgressNotification}。
+ *
+ * <p>
+ * 使用示例：<pre>{@code
+ * &#64;McpProgress(clientId = "my-client-id")
+ * public void handleProgressMessage(ProgressNotification notification) {
+ *     // 处理进度通知
+ * }
+ * }</pre>
+ *
+ * @author Christian Tzolov
+ * @see io.modelcontextprotocol.spec.McpSchema.ProgressNotification
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -50,6 +67,9 @@ public @interface McpProgress {
 	/**
 	 * Used as connection or client identifier to select the MCP client, the progress
 	 * consumer is associated with. At least one client identifier must be specified.
+	 */
+	/**
+	 * 用作连接或客户端标识，用于筛选与该进度消费方法关联的MCP客户端。必须至少指定一个客户端标识。
 	 */
 	String[] clients();
 

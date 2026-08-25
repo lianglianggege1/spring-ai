@@ -29,6 +29,13 @@ import io.modelcontextprotocol.spec.McpSchema;
  *
  * @author Christian Tzolov
  */
+/**
+ * 特殊对象，在所有MCP客户端与服务端的请求、通知处理器中，作为方法参数，用来表示
+ * {@link McpSchema.Request#meta()}、{@link McpSchema.Notification#meta()} 以及 {@link McpSchema.Result#meta()} 的值。
+ *
+ * @author Christian Tzolov
+ */
+
 public record McpMeta(Map<String, Object> meta) {
 
 	public McpMeta {

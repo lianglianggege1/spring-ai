@@ -27,16 +27,25 @@ public enum ValidationMode {
 	/**
 	 * If the validation fails, an exception is thrown. This is the default mode.
 	 */
+	/**
+	 * 若校验失败，则抛出异常。此为默认模式。
+	 */
 	THROW,
 
 	/**
 	 * If the validation fails, a warning is logged. The template is rendered with the
 	 * missing placeholders/variables. This mode is not recommended for production use.
 	 */
+	/**
+	 * 若校验失败，则记录警告日志。模板仍会使用缺失的占位符/变量完成渲染。该模式不建议在生产环境使用。
+	 */
 	WARN,
 
 	/**
 	 * No validation is performed.
+	 */
+	/**
+	 * 不执行任何校验。
 	 */
 	NONE
 

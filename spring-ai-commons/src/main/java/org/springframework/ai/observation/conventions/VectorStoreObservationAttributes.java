@@ -147,6 +147,9 @@ public enum VectorStoreObservationAttributes {
 	/**
 	 * The top-k most similar vectors returned by a query.
 	 */
+	/**
+	 * 查询返回的top‑k个最相似向量。
+	 */
 	DB_VECTOR_QUERY_TOP_K("db.vector.query.top_k");
 
 	private final String value;
@@ -158,6 +161,10 @@ public enum VectorStoreObservationAttributes {
 	/**
 	 * Return the string value of the attribute.
 	 * @return the string value of the attribute
+	 */
+	/**
+	 * 返回属性的字符串值。
+	 * @return 属性的字符串值
 	 */
 	public String value() {
 		return this.value;

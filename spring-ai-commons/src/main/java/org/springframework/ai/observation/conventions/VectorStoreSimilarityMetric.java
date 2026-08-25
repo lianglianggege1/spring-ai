@@ -34,20 +34,32 @@ public enum VectorStoreSimilarityMetric {
 	/**
 	 *  The cosine metric.
 	 */
+	/**
+	 * 余弦度量。
+	 */
 	COSINE("cosine"),
 
 	/**
 	 * The dot product metric.
+	 */
+	/**
+	 * 点积度量。
 	 */
 	DOT("dot"),
 
 	/**
 	 * The euclidean distance metric.
 	 */
+	/**
+	 * 欧氏距离度量。
+	 */
 	EUCLIDEAN("euclidean"),
 
 	/**
 	 * The manhattan distance metric.
+	 */
+	/**
+	 * 曼哈顿距离度量。
 	 */
 	MANHATTAN("manhattan");
 

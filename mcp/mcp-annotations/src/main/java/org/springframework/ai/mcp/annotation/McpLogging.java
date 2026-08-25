@@ -58,6 +58,37 @@ import java.lang.annotation.Target;
  * @see io.modelcontextprotocol.spec.McpSchema.LoggingMessageNotification
  * @see io.modelcontextprotocol.spec.McpSchema.LoggingLevel
  */
+/**
+ * 用于处理来自MCP服务器的日志消息通知的方法注解。该注解仅适用于MCP客户端。
+ *
+ * <p>
+ * 被该注解标记的方法可消费MCP服务器输出的日志消息。方法支持两种入参形式：
+ * <ul>
+ * <li>单个参数，类型为 {@code LoggingMessageNotification}
+ * <li>三个参数，依次为 {@code LoggingLevel}、{@code String}（日志器名称）、{@code String}（日志数据）
+ * </ul>
+ *
+ * <p>
+ * 同步消费方法返回值必须为void；异步消费方法返回值可以是void，也可以返回 {@code Mono<Void>}。
+ *
+ * <p>
+ * 使用示例：<pre>{@code
+ * &#64;McpLogging
+ * public void handleLoggingMessage(LoggingMessageNotification notification) {
+ *     // 处理通知消息
+ * }
+ *
+ * &#64;McpLogging
+ * public void handleLoggingMessageWithParams(LoggingLevel level, String logger, String data) {
+ *     // 处理日志消息
+ * }
+ * }</pre>
+ *
+ * @author Christian Tzolov
+ * @see io.modelcontextprotocol.spec.McpSchema.LoggingMessageNotification
+ * @see io.modelcontextprotocol.spec.McpSchema.LoggingLevel
+ */
+
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -66,6 +97,9 @@ public @interface McpLogging {
 	/**
 	 * Used as connection or clients identifier to select the MCP clients, the logging
 	 * consumer is associated with. At least one client identifier must be specified.
+	 */
+	/**
+	 * 用作连接或客户端标识，用于筛选与该日志消费方法关联的MCP客户端。必须至少指定一个客户端标识。
 	 */
 	String[] clients();
 

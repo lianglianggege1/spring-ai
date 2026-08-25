@@ -32,6 +32,13 @@ import org.springframework.ai.mcp.annotation.context.MetaProvider;
  * @author Vadzim Shurmialiou
  * @author Craig Walls
  */
+/**
+ * 将方法标记为MCP提示词。
+ *
+ * @author Christian Tzolov
+ * @author Vadzim Shurmialiou
+ * @author Craig Walls
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -35,15 +35,28 @@ import org.springframework.util.CollectionUtils;
  * @author Soby Chacko
  * @since 1.0.0
  */
+/**
+ * 使用JTokkit编码库估算给定文本或消息中的token数量。
+ *
+ * @author Christian Tzolov
+ * @author Soby Chacko
+ * @since 1.0.0
+ */
 public class JTokkitTokenCountEstimator implements TokenCountEstimator {
 
 	/**
 	 * The JTokkit encoding instance used for token counting.
 	 */
+	/**
+	 * 用于token计数的JTokkit编码实例。
+	 */
 	private final Encoding estimator;
 
 	/**
 	 * Creates a new JTokkitTokenCountEstimator with default CL100K_BASE encoding.
+	 */
+	/**
+	 * 创建JTokkitTokenCountEstimator实例，使用默认的CL100K_BASE编码。
 	 */
 	public JTokkitTokenCountEstimator() {
 		this(EncodingType.CL100K_BASE);
@@ -52,6 +65,10 @@ public class JTokkitTokenCountEstimator implements TokenCountEstimator {
 	/**
 	 * Creates a new JTokkitTokenCountEstimator with the specified encoding type.
 	 * @param tokenEncodingType the encoding type to use for token counting
+	 */
+	/**
+	 * 创建JTokkitTokenCountEstimator实例，使用指定的编码类型。
+	 * @param tokenEncodingType 用于token计数的编码类型
 	 */
 	public JTokkitTokenCountEstimator(final EncodingType tokenEncodingType) {
 		this.estimator = Encodings.newLazyEncodingRegistry().getEncoding(tokenEncodingType);

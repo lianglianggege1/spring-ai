@@ -32,10 +32,19 @@ import org.springframework.util.Assert;
  * @author Christian Tzolov
  * @since 1.0.0
  */
+/**
+ * ContentFormatTransformer 通过对每个文档应用内容格式化器，处理文档列表。
+ *
+ * @author Christian Tzolov
+ * @since 1.0.0
+ */
 public class ContentFormatTransformer implements DocumentTransformer {
 
 	/**
 	 * Disable the content-formatter template rewrite.
+	 */
+	/**
+	 * 禁用内容格式化器的模板重写功能。
 	 */
 	private final boolean disableTemplateRewrite;
 
@@ -45,6 +54,10 @@ public class ContentFormatTransformer implements DocumentTransformer {
 	 * Creates a ContentFormatTransformer object with the given ContentFormatter.
 	 * @param contentFormatter the ContentFormatter to be used for transforming the
 	 * documents
+	 */
+	/**
+	 * 使用指定的ContentFormatter创建ContentFormatTransformer对象。
+	 * @param contentFormatter 用于转换文档的ContentFormatter
 	 */
 	public ContentFormatTransformer(ContentFormatter contentFormatter) {
 		this(contentFormatter, false);
@@ -58,6 +71,11 @@ public class ContentFormatTransformer implements DocumentTransformer {
 	 * @param disableTemplateRewrite Flag indicating whether to disable the
 	 * content-formatter template rewrite
 	 */
+	/**
+	 * ContentFormatTransformer类负责处理文档列表，为每个文档应用内容格式化器。
+	 * @param contentFormatter 用于转换文档的ContentFormatter
+	 * @param disableTemplateRewrite 标识是否禁用内容格式化器的模板重写功能
+	 */
 	public ContentFormatTransformer(ContentFormatter contentFormatter, boolean disableTemplateRewrite) {
 		Assert.notNull(contentFormatter, "ContentFormatter is required");
 		this.contentFormatter = contentFormatter;
@@ -68,6 +86,11 @@ public class ContentFormatTransformer implements DocumentTransformer {
 	 * Post process documents chunked from loader. Allows extractors to be chained.
 	 * @param documents to post process.
 	 * @return processed documents
+	 */
+	/**
+	 * 对加载器分块后的文档执行后置处理。支持提取器链式调用。
+	 * @param documents 待后置处理的文档
+	 * @return 处理完成后的文档
 	 */
 	public List<Document> apply(List<Document> documents) {
 		documents.forEach(this::processDocument);

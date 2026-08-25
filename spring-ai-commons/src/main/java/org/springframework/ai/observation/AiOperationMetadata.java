@@ -33,6 +33,15 @@ import org.springframework.util.Assert;
  * @author Thomas Vitale
  * @since 1.0.0
  */
+/**
+ * AI操作（例如模型推理、微调、评估）关联的元数据。
+ *
+ * @param operationType 模型执行的操作类型。尽可能使用{@link AiOperationType}中的取值。
+ * @param provider 提供模型服务的系统名称。尽可能使用{@link AiProvider}中的取值。
+ * @author Thomas Vitale
+ * @since 1.0.0
+ */
+
 public record AiOperationMetadata(String operationType, String provider) {
 
 	/**

@@ -28,6 +28,11 @@ import java.lang.annotation.Target;
  *
  * @author Christian Tzolov
  */
+/**
+ * 用于标注方法参数，该参数用于存放请求方传来的进度令牌值。
+ *
+ * @author Christian Tzolov
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

@@ -38,6 +38,13 @@ import org.springframework.util.StreamUtils;
  * @author Craig Walls
  * @author Christian Tzolov
  */
+/**
+ * 从{@link Resource}资源中读取文本的{@link DocumentReader}实现。
+ *
+ * @author Craig Walls
+ * @author Christian Tzolov
+ */
+
 public class TextReader implements DocumentReader {
 
 	public static final String CHARSET_METADATA = "charset";
@@ -47,12 +54,18 @@ public class TextReader implements DocumentReader {
 	/**
 	 * Input resource to load the text from.
 	 */
+	/**
+	 * 用于加载文本的输入资源。
+	 */
 	private final Resource resource;
 
 	private final Map<String, Object> customMetadata = new HashMap<>();
 
 	/**
 	 * Character set to be used when loading data from the input resource.
+	 */
+	/**
+	 * 从输入资源加载数据时使用的字符集。
 	 */
 	private Charset charset = StandardCharsets.UTF_8;
 
@@ -77,6 +90,10 @@ public class TextReader implements DocumentReader {
 	/**
 	 * Metadata associated with all documents created by the loader.
 	 * @return Metadata to be assigned to the output Documents.
+	 */
+	/**
+	 * 加载器生成的所有文档所关联的元数据。
+	 * @return 待赋值给输出文档的元数据。
 	 */
 	public Map<String, Object> getCustomMetadata() {
 		return this.customMetadata;

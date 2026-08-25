@@ -33,6 +33,15 @@ import io.micrometer.tracing.handler.TracingObservationHandler;
  * @author Jonatan Ivanov
  * @since 1.0.0
  */
+/**
+ * 可包装另一个{@link ObservationHandler}的处理器，能够将链路追踪数据提供给
+ * {@link ObservationHandler#onStop(Observation.Context)}方法。
+ * 当日志库需要访问链路追踪数据（例如日志关联）时，可以使用该处理器。
+ *
+ * @param <T> 处理器上下文类型
+ * @author Jonatan Ivanov
+ * @since 1.0.0
+ */
 public class TracingAwareLoggingObservationHandler<T extends Observation.Context> implements ObservationHandler<T> {
 
 	private final ObservationHandler<T> delegate;
@@ -43,6 +52,11 @@ public class TracingAwareLoggingObservationHandler<T extends Observation.Context
 	 * Creates a new instance.
 	 * @param delegate ObservationHandler instance to delegate the handler method calls to
 	 * @param tracer Tracer instance to create the scope with
+	 */
+	/**
+	 * 创建新实例。
+	 * @param delegate 用于委托处理方法调用的ObservationHandler实例
+	 * @param tracer 用于创建作用域的Tracer实例
 	 */
 	public TracingAwareLoggingObservationHandler(ObservationHandler<T> delegate, Tracer tracer) {
 		this.delegate = delegate;

@@ -31,6 +31,15 @@ import java.lang.annotation.Target;
  *
  * @author Christian Tzolov
  */
+/**
+ * 标注MCP框架中用于补全功能的方法。该注解有两种互斥使用方式：
+ * 1. 对资源URI模板内的表达式进行补全
+ * 2. 对提示词参数进行补全
+ *
+ * 注意：只能使用prompt或uri其中一个属性，不可同时使用。
+ *
+ * @author Christian Tzolov
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -40,11 +49,17 @@ public @interface McpComplete {
 	 * The name reference to a prompt. This is used when the completion method is intended
 	 * to complete a prompt argument.
 	 */
+	/**
+	 * 提示词的名称引用。当补全方法用于补全提示词参数时使用该属性。
+	 */
 	String prompt() default "";
 
 	/**
 	 * The name reference to a resource template URI. This is used when the completion
 	 * method is intended to complete an expression within a URI template of a resource.
+	 */
+	/**
+	 * 资源模板URI的名称引用。当补全方法用于补全资源URI模板内的表达式时使用该属性。
 	 */
 	String uri() default "";
 

@@ -59,6 +59,40 @@ import java.lang.annotation.Target;
  * @see io.modelcontextprotocol.spec.McpSchema.ElicitRequest
  * @see io.modelcontextprotocol.spec.McpSchema.ElicitResult
  */
+/**
+ * 用于处理来自MCP服务器的引导请求的方法注解。该注解仅适用于MCP客户端。
+ *
+ * <p>
+ * 被该注解标记的方法可用来处理MCP服务器发来的引导请求。
+ *
+ * <p>
+ * 同步处理器方法必须返回 {@code ElicitResult}；异步处理器方法必须返回 {@code Mono<ElicitResult>}。
+ *
+ * <p>
+ * 使用示例：<pre>{@code
+ * &#64;McpElicitation(clients = "my-client-id")
+ * public ElicitResult handleElicitationRequest(ElicitRequest request) {
+ *     return ElicitResult.builder()
+ *         .message("Generated response")
+ *         .requestedSchema(
+ *             Map.of("type", "object", "properties", Map.of("message", Map.of("type", "string"))))
+ *         .build();
+ * }
+ *
+ * &#64;McpElicitation(clients = "my-client-id")
+ * public Mono<ElicitResult> handleAsyncElicitationRequest(ElicitRequest request) {
+ *     return Mono.just(ElicitResult.builder()
+ *         .message("Generated response")
+ *         .requestedSchema(
+ *             Map.of("type", "object", "properties", Map.of("message", Map.of("type", "string"))))
+ *         .build());
+ * }
+ * }</pre>
+ *
+ * @author Christian Tzolov
+ * @see io.modelcontextprotocol.spec.McpSchema.ElicitRequest
+ * @see io.modelcontextprotocol.spec.McpSchema.ElicitResult
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -67,6 +101,9 @@ public @interface McpElicitation {
 	/**
 	 * Used as connection or client identifier to select the MCP clients, the elicitation
 	 * method is associated with.
+	 */
+	/**
+	 * 用作连接或客户端标识，用于筛选与该引导方法关联的MCP客户端。
 	 */
 	String[] clients();
 

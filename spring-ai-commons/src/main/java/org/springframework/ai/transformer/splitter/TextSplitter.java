@@ -38,6 +38,9 @@ public abstract class TextSplitter implements DocumentTransformer {
 	 * If true the children documents inherit the content formatter of the parent they
 	 * were split from.
 	 */
+	/**
+	 * 若为true，则子文档会继承其父文档（拆分来源）的内容格式化器。
+	 */
 	private boolean copyContentFormatter = true;
 
 	@Override

@@ -27,6 +27,11 @@ import java.lang.annotation.Target;
  *
  * @author Christian Tzolov
  */
+/**
+ * 将方法参数标记为MCP参数。
+ *
+ * @author Christian Tzolov
+ */
 @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -44,6 +49,9 @@ public @interface McpArg {
 
 	/**
 	 * True if this argument is required. false if this argument is optional.
+	 */
+	/**
+	 * 为true表示该参数为必填；为false表示该参数为选填。
 	 */
 	boolean required() default false;
 
