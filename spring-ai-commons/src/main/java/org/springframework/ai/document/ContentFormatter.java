@@ -22,6 +22,11 @@ package org.springframework.ai.document;
  *
  * @author Christian Tzolov
  */
+/**
+ * 将文档的文本与元数据转换为适合AI提示词使用的文本格式。
+ *
+ * @author Christian Tzolov
+ */
 public interface ContentFormatter {
 
 	String format(Document document, MetadataMode mode);

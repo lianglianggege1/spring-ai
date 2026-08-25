@@ -26,6 +26,15 @@ package org.springframework.ai.observation.conventions;
  * "https://github.com/open-telemetry/semantic-conventions/tree/main/docs/gen-ai">OTel
  * Semantic Conventions</a>.
  */
+/**
+ * AI操作中产生与消耗的Token类型。基于OpenTelemetry人工智能系统语义约定。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ * @see <a href=
+ * "https://github.com/open-telemetry/semantic-conventions/tree/main/docs/gen-ai">OTel
+ * 语义约定</a>.
+ */
 public enum AiTokenType {
 
 // @formatter:off
@@ -33,13 +42,22 @@ public enum AiTokenType {
 	/**
 	 * Input token.
 	 */
+	/**
+	 * 输入Token。
+	 */
 	INPUT("input"),
 	/**
 	 * Output token.
 	 */
+	/**
+	 * 输出Token。
+	 */
 	OUTPUT("output"),
 	/**
 	 * Total token.
+	 */
+	/**
+	 * 总Token。
 	 */
 	TOTAL("total");
 
@@ -52,6 +70,10 @@ public enum AiTokenType {
 	/**
 	 * Return the value of the token type.
 	 * @return the value of the token type
+	 */
+	/**
+	 * 返回Token类型对应的值。
+	 * @return Token类型对应的值
 	 */
 	public String value() {
 		return this.value;

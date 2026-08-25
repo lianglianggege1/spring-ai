@@ -116,6 +116,81 @@ import org.springframework.util.StringUtils;
  * }
  * }</pre>
  */
+/**
+ * 文档作为容器，用于存放文档的内容与元数据，同时持有文档的唯一ID。
+ *
+ * <p>
+ * {@code Document} 仅可存放文本内容或媒体内容，二者不可共存。通过 {@link #getText()} 获取文本内容，
+ * 通过 {@link #getMedia()} 获取媒体内容。可使用 {@link #isText()} 判断当前持有的内容类型。
+ *
+ * <p>
+ * Document 用于在 Spring AI 的 ETL 流水线中流转数据：涵盖数据接入、数据转换，直至持久化到向量存储。
+ *
+ * <h2>JSON 序列化与反序列化</h2>
+ * <p>
+ * {@code Document} 完全支持 Jackson 序列化。序列化 JSON 使用如下字段：
+ * <ul>
+ * <li>{@code id} — 文档唯一标识符</li>
+ * <li>{@code text} — 文本内容（媒体文档此字段为 null）</li>
+ * <li>{@code media} — 媒体内容（文本文档此字段为 null）</li>
+ * <li>{@code metadata} — 元数据映射集合</li>
+ * <li>{@code score} — 相关性得分，允许为 null</li>
+ * </ul>
+ *
+ * <p>
+ * 反序列化逻辑由 {@link Builder} 实现。完整支持 JSON 往返：序列化后的 {@code Document}
+ * 可反序列化为等价的对象实例。
+ *
+ * <p>往返示例：<pre>{@code
+ * ObjectMapper mapper = JacksonUtils.getDefaultJsonMapper();
+ * Document original = Document.builder()
+ *     .id("doc-1")
+ *     .text("hello world")
+ *     .metadata("source", "example")
+ *     .score(0.95)
+ *     .build();
+ *
+ * String json = mapper.writeValueAsString(original);
+ * // {"id":"doc-1","text":"hello world","media":null,"metadata":{"source":"example"},"score":0.95}
+ *
+ * Document restored = mapper.readValue(json, Document.class);
+ * // restored.equals(original) == true
+ * }</pre>
+ *
+ * <h2>文档创建方式</h2>
+ * <p>创建文本文档示例：<pre>{@code
+ * // 使用构造函数
+ * Document textDoc = new Document("Sample text content", Map.of("source", "user-input"));
+ *
+ * // 推荐使用构建器
+ * Document textDoc = Document.builder()
+ *     .text("Sample text content")
+ *     .metadata("source", "user-input")
+ *     .build();
+ * }</pre>
+ *
+ * <p>创建媒体文档示例：<pre>{@code
+ * // 使用构造函数
+ * Media imageContent = new Media(MediaType.IMAGE_PNG, new byte[] {...});
+ * Document mediaDoc = new Document(imageContent, Map.of("filename", "sample.png"));
+ *
+ * // 推荐使用构建器
+ * Document mediaDoc = Document.builder()
+ *     .media(new Media(MediaType.IMAGE_PNG, new byte[] {...}))
+ *     .metadata("filename", "sample.png")
+ *     .build();
+ * }</pre>
+ *
+ * <p>内容类型判断与内容读取示例：<pre>{@code
+ * if (document.isText()) {
+ *     String text = document.getText();
+ *     // 处理文本内容
+ * } else {
+ *     Media media = document.getMedia();
+ *     // 处理媒体内容
+ * }
+ * }</pre>
+ */
 @JsonDeserialize(builder = Document.Builder.class)
 public class Document {
 

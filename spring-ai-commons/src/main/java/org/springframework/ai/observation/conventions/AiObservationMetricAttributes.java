@@ -26,12 +26,24 @@ package org.springframework.ai.observation.conventions;
  * "https://github.com/open-telemetry/semantic-conventions/tree/main/docs/gen-ai">OTel
  * Semantic Conventions</a>.
  */
+/**
+ * AI观测所使用的指标属性集合。基于OpenTelemetry人工智能系统语义约定。
+ *
+ * @author Thomas Vitale
+ * @since 1.0.0
+ * @see <a href=
+ * "https://github.com/open-telemetry/semantic-conventions/tree/main/docs/gen-ai">OTel
+ * 语义约定</a>.
+ */
 public enum AiObservationMetricAttributes {
 
 // @formatter:off
 
 	/**
 	 * The type of token being counted (input, output, total).
+	 */
+	/**
+	 * 被统计的Token类型（输入、输出、总计）。
 	 */
 	TOKEN_TYPE("gen_ai.token.type");
 
@@ -44,6 +56,10 @@ public enum AiObservationMetricAttributes {
 	/**
 	 * Return the value of the metric attribute.
 	 * @return the value of the metric attribute
+	 */
+	/**
+	 * 返回该指标属性的值。
+	 * @return 指标属性的值
 	 */
 	public String value() {
 		return this.value;

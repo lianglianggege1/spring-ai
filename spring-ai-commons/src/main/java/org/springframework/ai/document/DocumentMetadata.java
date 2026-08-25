@@ -32,6 +32,11 @@ public enum DocumentMetadata {
 	 * The lower the distance, the more they are similar.
 	 * It's the opposite of the similarity score.
 	 */
+	/**
+	 * 文档向量与查询向量之间的距离度量值。
+	 * 距离值越小，代表二者相似度越高。
+	 * 该值与相似度得分呈相反关系。
+	 */
 	DISTANCE("distance");
 
 	private final String value;

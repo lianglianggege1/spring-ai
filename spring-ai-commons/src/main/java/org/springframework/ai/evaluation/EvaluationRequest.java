@@ -33,6 +33,14 @@ import org.springframework.ai.document.Document;
  * @author Eddú Meléndez
  * @since 1.0.0 M1
  */
+/**
+ * 表示评估请求，包含用户文本、内容数据列表以及聊天响应。
+ * 评估请求用于基于上下文对聊天响应的相关性或正确性进行评估。
+ *
+ * @author Mark Pollack
+ * @author Eddú Meléndez
+ * @since 1.0.0 M1
+ */
 public class EvaluationRequest {
 
 	private final String userText;
